@@ -1,5 +1,5 @@
 # Configuración de Qt
-QT += quick
+QT += quick network core
 
 # Configuración del proyecto
 CONFIG += c++11
@@ -11,7 +11,11 @@ QML_IMPORT_PATH =
 QML_DESIGNER_IMPORT_PATH =
 
 # Archivos de recursos
+RESOURCES += qml.qrc
+
 SOURCES += \
+        hmimanager.cpp \
         main.cpp
 
-RESOURCES += qml.qrc
+HEADERS += \
+        hmimanager.h

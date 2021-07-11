@@ -1,5 +1,15 @@
+/*************************************************************/
+/* AUTOR: GabiAndi                                           */
+/* FECHA: 08/07/2021                                         */
+/*                                                           */
+/* DESCRIPCION:                                              */
+/* Codigo principal del programa.                            */
+/*************************************************************/
+
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+
+#include "hmimanager.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,7 +21,7 @@ int main(int argc, char *argv[])
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
 
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,&app, [url](QObject *obj, const QUrl &objUrl)
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &app, [url](QObject *obj, const QUrl &objUrl)
     {
         if (!obj && url == objUrl)
         {
@@ -19,7 +29,14 @@ int main(int argc, char *argv[])
         }
     }, Qt::QueuedConnection);
 
+    // Registro del backend C++ en QML
+    qmlRegisterType<HMIManager>("SCPA.HMIManager", 1, 0, "HMIManager");
+
+    // Se carga el archivo QML
     engine.load(url);
 
-    return app.exec();
+    // Buble infinito
+    int exit = app.exec();
+
+    return exit;
 }
