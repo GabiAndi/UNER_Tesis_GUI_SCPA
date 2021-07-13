@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.12
 
 import SCPA.HMIManager 1.0
@@ -61,6 +62,16 @@ Window {
             }
         }
 
+        Button {
+            id: buttonDesconectar
+            text: qsTr("Desconectar")
+            Layout.alignment: Qt.AlignCenter
+
+            onClicked: {
+                hmiManager.serverDisconnect()
+            }
+        }
+
         Label {
             text: qsTr("Enviar texto")
             font.pointSize: 14
@@ -79,6 +90,10 @@ Window {
             id: buttonEnviar
             text: qsTr("Enviar")
             Layout.alignment: Qt.AlignCenter
+
+            onPressed: {
+                hmiManager.serverSendData(textAreaMensaje.text)
+            }
         }
     }
 }
