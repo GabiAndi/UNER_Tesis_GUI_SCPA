@@ -3,7 +3,12 @@
 HMIManager::HMIManager(QObject *parent) : QObject(parent)
 {
     // Se inicia el cliente TCP
-    server = new QTcpSocket();
+    server = new QTcpSocket(this);
+}
+
+HMIManager::~HMIManager()
+{
+    delete server;
 }
 
 void HMIManager::serverConnect(const QString ip, const QString port)

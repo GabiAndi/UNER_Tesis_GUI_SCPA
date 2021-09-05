@@ -19,6 +19,7 @@ class HMIManager : public QObject
 
     public:
         explicit HMIManager(QObject *parent = nullptr);
+        ~HMIManager();
 
         Q_INVOKABLE void serverConnect(const QString ip, const QString port);
         Q_INVOKABLE void serverDisconnect();

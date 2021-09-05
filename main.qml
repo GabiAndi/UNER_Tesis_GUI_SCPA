@@ -1,11 +1,10 @@
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
-import QtQuick.Controls.Styles 1.4
-import QtQuick.Layouts 1.12
+import QtQuick                      2.15
+import QtQuick.Window               2.15
+import QtQuick.Controls             2.12
+import QtQuick.Controls.Material    2.12
+import QtQuick.Layouts              1.12
 
-import SCPA.HMIManager 1.0
+import SCPA.HMIManager              1.0
 
 Window {
     width: 800
@@ -34,8 +33,8 @@ Window {
 
         TextArea {
             id: textAreaIP
-            placeholderText: qsTr("10.0.0.100")
-            text: "10.0.0.100"
+            placeholderText: qsTr("localhost")
+            text: "localhost"
             Layout.alignment: Qt.AlignCenter
         }
 
@@ -97,3 +96,9 @@ Window {
         }
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:0.66}
+}
+##^##*/
