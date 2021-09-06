@@ -7,12 +7,18 @@ import QtQuick.Layouts              1.12
 import SCPA.HMIManager              1.0
 
 Window {
+    id: window
+
     width: 800
     height: 600
+
     visible: true
+    visibility: Qt.WindowFullScreen | Qt.Window
+
+    flags: Qt.FramelessWindowHint
+
     color: "#2f2f2f"
-    title: qsTr("HMI SCPA")
-    id: window
+    title: "HMI SCPA"
 
     Material.theme: Material.Dark
     Material.accent: "#10A022"
@@ -22,76 +28,57 @@ Window {
     }
 
     ColumnLayout {
-        width: window.width
-        height: window.height
+        width: parent.width
+        height: parent.height
 
-        Label {
-            text: qsTr("IP del servidor")
-            font.pointSize: 14
-            Layout.alignment: Qt.AlignCenter
-        }
+        ColumnLayout {
+            anchors.top: parent.top
+            anchors.horizontalCenter: parent.horizontalCenter
 
-        TextArea {
-            id: textAreaIP
-            placeholderText: qsTr("localhost")
-            text: "localhost"
-            Layout.alignment: Qt.AlignCenter
-        }
-
-        Label {
-            text: qsTr("Puerto")
-            font.pointSize: 14
-            Layout.alignment: Qt.AlignCenter
-        }
-
-        TextArea {
-            id: textAreaPuerto
-            placeholderText: qsTr("33600")
-            text: "33600"
-            Layout.alignment: Qt.AlignCenter
-        }
-
-        Button {
-            id: buttonConectar
-            text: qsTr("Conectar")
-            Layout.alignment: Qt.AlignCenter
-
-            onClicked: {
-                hmiManager.serverConnect(textAreaIP.text, textAreaPuerto.text)
+            Label {
+                topPadding: 10
+                text: "Conexión"
+                font.pointSize: 32
+                Layout.alignment: Qt.AlignCenter
+                bottomPadding: 20
             }
-        }
 
-        Button {
-            id: buttonDesconectar
-            text: qsTr("Desconectar")
-            Layout.alignment: Qt.AlignCenter
-
-            onClicked: {
-                hmiManager.serverDisconnect()
+            Label {
+                text: "Dirección IP"
+                font.pointSize: 14
+                Layout.alignment: Qt.AlignCenter
             }
-        }
 
-        Label {
-            text: qsTr("Enviar texto")
-            font.pointSize: 14
-            Layout.alignment: Qt.AlignCenter
-        }
+            TextArea {
+                id: textAreaIP
+                placeholderText: "Ejemplo: 192.168.0.100"
+                text: "10.0.0.100"
+                horizontalAlignment: Text.AlignHCenter
+                Layout.alignment: Qt.AlignCenter
+            }
 
-        TextArea {
-            id: textAreaMensaje
-            placeholderText: qsTr("Mensaje")
-            text: "Prueba"
-            wrapMode: Text.NoWrap
-            Layout.alignment: Qt.AlignCenter
-        }
+            Label {
+                text: "Número de puerto"
+                font.pointSize: 14
+                Layout.alignment: Qt.AlignCenter
+            }
 
-        Button {
-            id: buttonEnviar
-            text: qsTr("Enviar")
-            Layout.alignment: Qt.AlignCenter
+            TextArea {
+                id: textAreaPuerto
+                placeholderText: "Por defecto: 33600"
+                text: "33600"
+                horizontalAlignment: Text.AlignHCenter
+                Layout.alignment: Qt.AlignCenter
+            }
 
-            onPressed: {
-                hmiManager.serverSendData(textAreaMensaje.text)
+            Button {
+                id: buttonConectar
+                text: "Conectar"
+                Layout.alignment: Qt.AlignCenter
+
+                onClicked: {
+                    hmiManager.serverConnect(textAreaIP.text, textAreaPuerto.text)
+                }
             }
         }
     }
@@ -99,6 +86,6 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.66}
+    D{i:0;formeditorZoom:1.1}
 }
 ##^##*/

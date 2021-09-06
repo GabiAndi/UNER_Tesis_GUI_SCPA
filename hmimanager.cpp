@@ -3,7 +3,7 @@
 HMIManager::HMIManager(QObject *parent) : QObject(parent)
 {
     // Se inicia el cliente TCP
-    server = new QTcpSocket(this);
+    server = new QTcpSocket();
 }
 
 HMIManager::~HMIManager()
@@ -19,9 +19,4 @@ void HMIManager::serverConnect(const QString ip, const QString port)
 void HMIManager::serverDisconnect()
 {
     server->disconnectFromHost();
-}
-
-void HMIManager::serverSendData(const QString data)
-{
-    server->write(data.toLatin1());
 }

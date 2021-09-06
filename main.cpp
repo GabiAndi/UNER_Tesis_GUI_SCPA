@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &app, [url](QObject *obj, const QUrl &objUrl)
     {
-        if (!obj && url == objUrl)
+        if ((!obj) && (url == objUrl))
         {
             QCoreApplication::exit(-1);
         }
@@ -36,7 +36,5 @@ int main(int argc, char *argv[])
     engine.load(url);
 
     // Buble infinito
-    int exit = app.exec();
-
-    return exit;
+    return app.exec();
 }
