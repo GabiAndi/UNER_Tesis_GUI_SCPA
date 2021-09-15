@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>ProgressBarCircular.qml</file>
+        <file>PiletaLodosActivos.qml</file>
     </qresource>
 </RCC>

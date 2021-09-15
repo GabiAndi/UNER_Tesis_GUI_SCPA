@@ -24,7 +24,6 @@ Window {
     property color backgroundColor: "#2F2F2F"
     property color accentColor: "#FF1D00"
 
-    Material.theme: Material.Dark
     color: window.backgroundColor
     Material.accent: window.accentColor
 
@@ -126,7 +125,7 @@ Window {
                     font.pointSize: 16
 
                     onClicked: {
-                        hmiManager.serverConnect(textAreaIP.text, textAreaPuerto.text)
+                        hmiManager.serverConnect(textAreaIP.text, textAreaPuerto.text);
                     }
                 }
             }
@@ -138,105 +137,153 @@ Window {
             width: parent.width
             height: parent.height
 
-            Layout.alignment: Qt.AlignCenter
+            PiletaLodosActivos {
+                width: parent.width - 300
+                height: parent.height - 300
+
+                anchors.centerIn: parent
+            }
+
+            Button {
+                id: buttonDisconnect
+
+                anchors.left: parent.left
+                anchors.bottom: parent.bottom
+
+                anchors.margins: 20
+                horizontalPadding: 20
+                verticalPadding: 15
+
+                text: "Salir"
+                font.pointSize: 16
+
+                onClicked: {
+                    Qt.quit();
+                }
+            }
+
+            Button {
+                id: buttonPageMotores
+
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+
+                anchors.margins: 20
+                horizontalPadding: 20
+                verticalPadding: 15
+
+                text: "Motores"
+                font.pointSize: 16
+
+                onClicked: {
+                    stackLayout.currentIndex = 2;
+                }
+            }
+        }
+
+        Item {
+            id: pageMotores
+
+            width: parent.width
+            height: parent.height
 
             ColumnLayout {
                 width: parent.width
                 height: parent.height
 
-                Layout.alignment: Qt.AlignCenter
-
                 RowLayout {
                     width: parent.width
+                    height: parent.height
 
                     Layout.alignment: Qt.AlignCenter
 
-                    Item {
-                        width: 10
+                    ColumnLayout {
+                        width: parent.width
 
-                        Layout.alignment: Qt.AlignVCenter
-                    }
+                        Label {
+                            Layout.alignment: Qt.AlignHCenter
 
-                    ProgressBarCircular {
-                        width: 125
-                        height: 125
+                            text: "Motor 1"
 
-                        primaryColor: "white"
-                        secondaryColor: window.accentColor
-                        textColor: "white"
+                            font.pointSize: 20
+                        }
 
-                        text: "OD"
-                    }
+                        ProgressBarCircular {
+                            width: 125
+                            height: 125
 
-                    Item {
-                        width: 10
+                            Layout.alignment: Qt.AlignHCenter
 
-                        Layout.alignment: Qt.AlignVCenter
-                    }
+                            primaryColor: "white"
+                            secondaryColor: window.accentColor
+                            valueColor: "white"
 
-                    ProgressBarCircular {
-                        width: 125
-                        height: 125
+                            valueScale: 1.8
 
-                        primaryColor: "white"
-                        secondaryColor: window.accentColor
-                        textColor: "white"
+                            maximumValue: 60
 
-                        text: "OD"
+                            currentValue: 50
+                        }
                     }
 
                     Item {
-                        width: 10
-
-                        Layout.alignment: Qt.AlignVCenter
+                        width: 50
                     }
 
-                    ProgressBarCircular {
-                        width: 125
-                        height: 125
+                    ColumnLayout {
+                        width: parent.width
 
-                        primaryColor: "white"
-                        secondaryColor: window.accentColor
-                        textColor: "white"
+                        Label {
+                            Layout.alignment: Qt.AlignHCenter
 
-                        text: "OD"
+                            text: "Motor 2"
+
+                            font.pointSize: 20
+                        }
+
+                        ProgressBarCircular {
+                            width: 125
+                            height: 125
+
+                            Layout.alignment: Qt.AlignHCenter
+
+                            primaryColor: "white"
+                            secondaryColor: window.accentColor
+                            valueColor: "white"
+
+                            valueScale: 1.8
+
+                            maximumValue: 60
+
+                            currentValue: 0
+                        }
                     }
+                }
+            }
 
-                    Item {
-                        width: 10
+            Button {
+                id: buttonPageTratamientoBiolgico
 
-                        Layout.alignment: Qt.AlignVCenter
-                    }
+                anchors.left: parent.left
+                anchors.bottom: parent.bottom
 
-                    ProgressBarCircular {
-                        width: 125
-                        height: 125
+                anchors.margins: 20
+                horizontalPadding: 20
+                verticalPadding: 15
 
-                        primaryColor: "white"
-                        secondaryColor: window.accentColor
-                        textColor: "white"
+                text: "Biológico"
+                font.pointSize: 16
 
-                        text: "OD"
-                    }
-
-                    Item {
-                        width: 10
-
-                        Layout.alignment: Qt.AlignVCenter
-                    }
-
-                    ProgressBarCircular {
-                        width: 125
-                        height: 125
-
-                        primaryColor: "white"
-                        secondaryColor: window.accentColor
-                        textColor: "white"
-
-                        text: "OD"
-                    }
+                onClicked: {
+                    stackLayout.currentIndex = 1;
                 }
             }
         }
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:0.66}
+}
+##^##*/
