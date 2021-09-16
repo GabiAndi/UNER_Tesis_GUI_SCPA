@@ -6,8 +6,8 @@ Canvas {
     id: canvas
 
     // Tamaño
-    width: 600
-    height: 300
+    width: 700
+    height: 350
 
     // Propiedades
     property color lineColor: "#CCCCCC"
@@ -83,20 +83,20 @@ Canvas {
 
             text: "Nivel OD"
 
-            font.pointSize: 24
+            font.pointSize: 16
         }
 
         ProgressBarCircular {
             id: progressBarNivelOD
 
-            /*width: parent.width
-            height: parent.height / 2*/
+            width: 70
+            height: 70
 
             Layout.alignment: Qt.AlignHCenter
 
-            primaryColor: "blue"
+            primaryColor: "white"
             secondaryColor: window.accentColor
-            valueColor: "blue"
+            valueColor: "white"
 
             valueScale: 1.9
 

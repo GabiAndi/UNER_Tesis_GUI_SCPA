@@ -16,9 +16,6 @@ Window {
     // Modo full screen
     visible: true
     visibility: Qt.WindowFullScreen | Qt.Window
-    flags: Qt.FramelessWindowHint
-
-    title: "HMI SCPA"
 
     // Tema
     property color backgroundColor: "#2F2F2F"
