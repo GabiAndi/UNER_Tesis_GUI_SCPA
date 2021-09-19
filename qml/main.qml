@@ -19,7 +19,7 @@ Window {
 
     // Tema
     property color backgroundColor: "#2F2F2F"
-    property color accentColor: "#FF1D00"
+    property color accentColor: "red"
 
     color: window.backgroundColor
     Material.accent: window.accentColor
@@ -36,7 +36,7 @@ Window {
 
         Layout.alignment: Qt.AlignCenter
 
-        currentIndex: 1
+        currentIndex: 0
 
         Item {
             id: pageConnect
@@ -122,8 +122,28 @@ Window {
                     font.pointSize: 16
 
                     onClicked: {
-                        hmiManager.serverConnect(textAreaIP.text, textAreaPuerto.text);
+                        //hmiManager.serverConnect(textAreaIP.text, textAreaPuerto.text);
+
+                        stackLayout.currentIndex = 1;
                     }
+                }
+            }
+
+            Button {
+                id: buttonClose
+
+                anchors.left: parent.left
+                anchors.bottom: parent.bottom
+
+                anchors.margins: 20
+                horizontalPadding: 20
+                verticalPadding: 15
+
+                text: "Salir"
+                font.pointSize: 16
+
+                onClicked: {
+                    Qt.quit();
                 }
             }
         }
@@ -133,6 +153,19 @@ Window {
 
             width: parent.width
             height: parent.height
+
+            Label {
+                width: parent.width
+                height: parent.height
+
+                text: "Tratamiento biológico"
+                font.pointSize: 34
+
+                topPadding: 16
+
+                horizontalAlignment: Text.Center
+                verticalAlignment: Text.AlignTop
+            }
 
             PiletaLodosActivos {
                 width: parent.width - 300
@@ -151,11 +184,11 @@ Window {
                 horizontalPadding: 20
                 verticalPadding: 15
 
-                text: "Salir"
+                text: "Desconectar"
                 font.pointSize: 16
 
                 onClicked: {
-                    Qt.quit();
+                    stackLayout.currentIndex = 0;
                 }
             }
 
@@ -184,77 +217,25 @@ Window {
             width: parent.width
             height: parent.height
 
-            ColumnLayout {
-                width: parent.width
-                height: parent.height
+            RowLayout {
+                anchors.centerIn: parent
 
-                RowLayout {
-                    width: parent.width
-                    height: parent.height
+                VariableProgressBar {
+                    titleText: "PM70-M01"
 
-                    Layout.alignment: Qt.AlignCenter
+                    titleTextPointSize: 34
 
-                    ColumnLayout {
-                        width: parent.width
+                    progressBarSize: 300
+                }
 
-                        Label {
-                            Layout.alignment: Qt.AlignHCenter
+                VariableProgressBar {
+                    titleText: "PM70-M02"
 
-                            text: "Motor 1"
+                    titleTextPointSize: 34
 
-                            font.pointSize: 20
-                        }
+                    progressBarSize: 300
 
-                        ProgressBarCircular {
-                            width: 125
-                            height: 125
-
-                            Layout.alignment: Qt.AlignHCenter
-
-                            primaryColor: "white"
-                            secondaryColor: window.accentColor
-                            valueColor: "white"
-
-                            valueScale: 1.8
-
-                            maximumValue: 60
-
-                            currentValue: 50
-                        }
-                    }
-
-                    Item {
-                        width: 50
-                    }
-
-                    ColumnLayout {
-                        width: parent.width
-
-                        Label {
-                            Layout.alignment: Qt.AlignHCenter
-
-                            text: "Motor 2"
-
-                            font.pointSize: 20
-                        }
-
-                        ProgressBarCircular {
-                            width: 125
-                            height: 125
-
-                            Layout.alignment: Qt.AlignHCenter
-
-                            primaryColor: "white"
-                            secondaryColor: window.accentColor
-                            valueColor: "white"
-
-                            valueScale: 1.8
-
-                            maximumValue: 60
-
-                            currentValue: 0
-                        }
-                    }
+                    currentValue: 0
                 }
             }
 

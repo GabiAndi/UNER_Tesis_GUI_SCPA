@@ -5,6 +5,8 @@ import QtQuick.Layouts              1.12
 Canvas {
     id: canvas
 
+    antialiasing: true
+
     // Tamaño
     width: 700
     height: 350
@@ -13,13 +15,22 @@ Canvas {
     property color lineColor: "#CCCCCC"
 
     // Propiedades de dibujo
-    property real grillaPosInicial: width * (1/4 + 2/8);
-    property real grillaPosFinal: width * (24/25);
+    property real clarificadorPosInicial: canvas.width * (1/4 - 1/8)
 
-    property real grillaPosFondo: height * (15/16);
+    property real grillaPosInicial: width * (1/4 + 2/8)
+    property real grillaPosFinal: width * (24/25)
 
-    property real grillaDifusoresLimite: grillaPosFinal - grillaPosInicial;
-    property real grillaDifusoresCantidad: 10;
+    property real grillaPosFondo: height * (15/16)
+
+    property real grillaDifusoresLimite: grillaPosFinal - grillaPosInicial
+    property real grillaDifusoresCantidad: 10
+
+    // Tamaño de los progress bar
+    property int variableProgressBarSize: grillaDifusoresLimite * (1/5)
+
+    // Eventos
+    onWidthChanged: canvas.requestPaint()
+    onHeightChanged: canvas.requestPaint()
 
     onPaint: {
         var ctx = getContext("2d");
@@ -43,7 +54,7 @@ Canvas {
         ctx.lineWidth = 3;
         ctx.strokeStyle = canvas.lineColor;
 
-        ctx.moveTo(canvas.width * (1/4 - 1/8), 0);
+        ctx.moveTo(canvas.clarificadorPosInicial, 0);
         ctx.lineTo(canvas.width * (1/4), canvas.height * (3/4));
 
         ctx.moveTo(canvas.width * (1/4 + 2/8), 0);
@@ -71,44 +82,54 @@ Canvas {
         ctx.restore();
     }
 
-    ColumnLayout {
-        width: canvas.grillaDifusoresLimite
-        height: canvas.height / 4
+    // Motor de zona anoxica
+    MotorValue {
+        x: canvas.clarificadorPosInicial * (1/6)
+        y: canvas.height * (5/7)
 
+        nombreMotor: "P70-M03"
+    }
+
+    // Motor de aireación
+    MotorValue {
+        x: canvas.grillaPosInicial + (canvas.grillaPosFinal - canvas.grillaPosInicial - width) / 2
+        y: canvas.grillaPosFondo + height * (1/3)
+
+        nombreMotor: "P70-M01"
+    }
+
+    RowLayout {
         x: canvas.grillaPosInicial
         y: canvas.height / 4
 
-        Label {
-            Layout.alignment: Qt.AlignHCenter
+        VariableProgressBar {
+            id: nivelOD
 
-            text: "Nivel OD"
+            progressBarSize: variableProgressBarSize
 
-            font.pointSize: 16
+            titleText: "OD"
         }
 
-        ProgressBarCircular {
-            id: progressBarNivelOD
+        VariableProgressBar {
+            id: nivelPH
 
-            width: 70
-            height: 70
+            progressBarSize: variableProgressBarSize
 
-            Layout.alignment: Qt.AlignHCenter
+            titleText: "PH"
+        }
 
-            primaryColor: "white"
-            secondaryColor: window.accentColor
-            valueColor: "white"
+        VariableProgressBar {
+            id: nivelLodo
 
-            valueScale: 1.9
+            progressBarSize: variableProgressBarSize
 
-            maximumValue: 100
-
-            currentValue: 50
+            titleText: "Lodo"
         }
     }
 }
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.75}
+    D{i:0;formeditorColor:"#4c4e50";formeditorZoom:1.75}
 }
 ##^##*/

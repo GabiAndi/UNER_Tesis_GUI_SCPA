@@ -15,7 +15,8 @@ QML_IMPORT_PATH =
 QML_DESIGNER_IMPORT_PATH =
 
 # Archivos de recursos
-RESOURCES += qml.qrc
+RESOURCES += \
+        src.qrc
 
 SOURCES += \
         hmimanager.cpp \
