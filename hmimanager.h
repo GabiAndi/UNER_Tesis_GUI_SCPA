@@ -5,7 +5,6 @@
 /* DESCRIPCION:                                              */
 /* Codigo controlador del HMI.                               */
 /*************************************************************/
-
 #ifndef HMIMANAGER_H
 #define HMIMANAGER_H
 

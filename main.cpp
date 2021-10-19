@@ -5,7 +5,6 @@
 /* DESCRIPCION:                                              */
 /* Codigo principal del programa.                            */
 /*************************************************************/
-
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
@@ -13,7 +12,8 @@
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    // Añadimos el modulo para el QtVirtualKeyboard
+    qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 
     QGuiApplication app(argc, argv);
 

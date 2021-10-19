@@ -1,10 +1,13 @@
-import QtQuick                      2.15
-import QtQuick.Window               2.15
-import QtQuick.Controls             2.12
-import QtQuick.Controls.Material    2.12
-import QtQuick.Layouts              1.12
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
+import QtQuick.VirtualKeyboard
+import QtQuick.VirtualKeyboard.Styles
+import QtQuick.VirtualKeyboard.Settings
 
-import SCPA.HMIManager              1.0
+import SCPA.HMIManager
 
 Window {
     id: window
@@ -15,7 +18,7 @@ Window {
 
     // Modo full screen
     visible: true
-    visibility: Qt.WindowFullScreen | Qt.Window
+    //visibility: Qt.WindowFullScreen | Qt.Window
 
     // Tema
     property color backgroundColor: "#2F2F2F"
@@ -72,7 +75,7 @@ Window {
                         font.pointSize: 14
                     }
 
-                    TextArea {
+                    TextField {
                         id: textAreaIP
 
                         horizontalAlignment: Text.AlignHCenter
@@ -80,6 +83,13 @@ Window {
 
                         placeholderText: "192.168.0.100"
                         text: "10.0.0.100"
+
+                        inputMethodHints: Qt.ImhPreferNumbers
+
+                        EnterKeyAction.actionId: EnterKeyAction.Next
+                        onAccepted: {
+                            textAreaPuerto.focus = true;
+                        }
                     }
                 }
 
@@ -93,7 +103,7 @@ Window {
                         font.pointSize: 14
                     }
 
-                    TextArea {
+                    TextField {
                         id: textAreaPuerto
 
                         horizontalAlignment: Text.AlignHCenter
@@ -101,6 +111,11 @@ Window {
 
                         placeholderText: "33600"
                         text: "33600"
+
+                        inputMethodHints: Qt.ImhPreferNumbers
+                        onAccepted: {
+                            buttonConnect.clicked();
+                        }
                     }
                 }
 
