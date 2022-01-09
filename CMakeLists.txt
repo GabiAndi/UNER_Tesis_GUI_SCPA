@@ -1,33 +1,30 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.16)
 
 project(GUI_SCPA VERSION 0.0.1 LANGUAGES CXX)
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(APP_NAME appGUI_SCPA)
 
-set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 COMPONENTS Gui REQUIRED)
 find_package(Qt6 COMPONENTS Quick REQUIRED)
-find_package(Qt6 COMPONENTS Network REQUIRED)
 
 set(PROJECT_SOURCES
     main.cpp
-    hmimanager.cpp
-    hmimanager.h
-    src.qrc
+    guiscpamanager.h guiscpamanager.cpp
 )
 
-qt_add_executable(${PROJECT_NAME}
-    ${PROJECT_SOURCES}
+qt_add_executable(${APP_NAME} MANUAL_FINALIZATION ${PROJECT_SOURCES})
+
+qt_add_qml_module(${APP_NAME}
+    URI ${PROJECT_NAME}
+    VERSION ${PROJECT_VERSION}
+    QML_FILES
+        main.qml
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Gui)
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Quick)
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Network)
+target_link_libraries(${APP_NAME} PRIVATE Qt6::Quick)
 
-qt_import_qml_plugins(${PROJECT_NAME})
+qt_finalize_executable(${APP_NAME})

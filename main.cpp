@@ -1,40 +1,30 @@
 /*************************************************************/
 /* AUTOR: GabiAndi                                           */
-/* FECHA: 08/07/2021                                         */
+/* FECHA: 09/01/2022                                         */
 /*                                                           */
 /* DESCRIPCION:                                              */
-/* Codigo principal del programa.                            */
+/* Entrada del programa para interfaz de usuario.            */
 /*************************************************************/
+
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
-#include "hmimanager.h"
+#include "guiscpamanager.h"
 
 int main(int argc, char *argv[])
 {
-    // Añadimos el modulo para el QtVirtualKeyboard
+    // Importamos el modulo del teclado virtual
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 
+    // Registramos el manejador al QML
+    qmlRegisterType<GUISCPAManager>("GUISCPA", 1, 0, "GUISCPAManager");
+
+    // Iniciamos la aplicacion
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
 
-    const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
+    engine.load(QUrl("qrc:/GUI_SCPA/main.qml"));
 
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &app, [url](QObject *obj, const QUrl &objUrl)
-    {
-        if ((!obj) && (url == objUrl))
-        {
-            QCoreApplication::exit(-1);
-        }
-    }, Qt::QueuedConnection);
-
-    // Registro del backend C++ en QML
-    qmlRegisterType<HMIManager>("SCPA.HMIManager", 1, 0, "HMIManager");
-
-    // Se carga el archivo QML
-    engine.load(url);
-
-    // Buble infinito
     return app.exec();
 }
