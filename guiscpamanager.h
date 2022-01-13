@@ -12,25 +12,33 @@
 
 #include <QObject>
 
+#include <QThread>
+
 #include <qqml.h>
+
+#include "hmiclientmanager.h"
 
 class GUISCPAManager : public QObject
 {
         Q_OBJECT
-        Q_PROPERTY(QString serverIP READ getServerIP WRITE setServerIP NOTIFY serverIPChanged)
         QML_ELEMENT
 
     public:
         explicit GUISCPAManager(QObject *parent = nullptr);
+        ~GUISCPAManager();
 
-        QString getServerIP();
-        void setServerIP(const QString &serverIP);
+        Q_INVOKABLE void connectToServer(const QString serverIP, const QString serverPort,
+                                         const QString user, const QString password);
 
     signals:
-        void serverIPChanged();
+        void hmiConnect(const QString serverIP, const QString serverPort,
+                        const QString user, const QString password);
+
+        void sessionInit();
 
     private:
-        QString _serverIP;
+        QThread *hmiClientThread = nullptr;
+        HMIClientManager *hmiClientManager = nullptr;
 };
 
 #endif // GUISCPAMANAGER_H

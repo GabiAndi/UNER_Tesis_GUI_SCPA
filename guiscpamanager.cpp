@@ -3,17 +3,30 @@
 GUISCPAManager::GUISCPAManager(QObject *parent)
     : QObject{parent}
 {
-    _serverIP = "XD";
+    // Creamos los hilos
+    hmiClientThread = new QThread(this);
+    hmiClientManager = new HMIClientManager();
+
+    hmiClientManager->moveToThread(hmiClientThread);
+
+    connect(hmiClientThread, &QThread::started, hmiClientManager, &HMIClientManager::init);
+
+    connect(this, &GUISCPAManager::hmiConnect, hmiClientManager, &HMIClientManager::hmiConnect);
+
+    hmiClientThread->start();
 }
 
-QString GUISCPAManager::getServerIP()
+GUISCPAManager::~GUISCPAManager()
 {
-    return _serverIP;
+    hmiClientThread->quit();
+    hmiClientThread->wait();
+
+    delete hmiClientManager;
+    delete hmiClientThread;
 }
 
-void GUISCPAManager::setServerIP(const QString &serverIP)
+void GUISCPAManager::connectToServer(const QString serverIP, const QString serverPort,
+                                     const QString user, const QString password)
 {
-    _serverIP = serverIP;
-
-    emit serverIPChanged();
+    emit hmiConnect(serverIP, serverPort, user, password);
 }
