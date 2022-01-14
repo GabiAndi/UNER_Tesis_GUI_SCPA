@@ -13,7 +13,6 @@
 #include <QObject>
 
 #include <QTcpSocket>
-#include <QThread>
 
 #include "hmiprotocolmanager.h"
 
@@ -29,33 +28,23 @@ class HMIClientManager : public QObject
         void readData(const QByteArray data);
         void writeData(const QByteArray cmd, const QByteArray payload);
 
-        void sendAlive();
-        void userLogin(const QString user, const QString password);
-
     public slots:
         void init();
 
-        void hmiConnect(const QString serverIP, const QString serverPort,
-                        const QString user, const QString password);
+        void hmiConnect(const QString serverIP, const QString serverPort);
 
     private:
         // Conexion
         QTcpSocket *serverSocket = nullptr;
 
-        QString *user = nullptr;
-        QString *password = nullptr;
-
         // Protocolo
-        QThread *protocolThread = nullptr;
         HMIProtocolManager *protocolManager = nullptr;
 
     private slots:
         // Eventos
-        void hmiConnected();
-        void hmiErrorOccurred(QAbstractSocket::SocketError error);
-        void hmiDisconnected();
-
-        void userConnected();
+        void clientConnection();
+        void clientErrorConnection(QAbstractSocket::SocketError error);
+        void clientDisconnection();
 };
 
 #endif // HMICLIENTMANAGER_H

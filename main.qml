@@ -217,8 +217,7 @@ Window {
 
                     onClicked: {
                         // Conectar
-                        guiSCPAManager.connectToServer(textFieldServerIP.text, textFieldServerPort.text,
-                                                       textFieldUser.text, textFieldPassword.text);
+                        guiSCPAManager.connectToServer(textFieldServerIP.text, textFieldServerPort.text);
                     }
                 }
             }

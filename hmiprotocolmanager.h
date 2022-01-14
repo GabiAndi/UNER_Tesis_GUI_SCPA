@@ -25,26 +25,26 @@ class HMIProtocolManager : public QObject
         ~HMIProtocolManager();
 
     signals:
+        // Señal de paquete listo para enviar
         void readyWrite(const QByteArray package);
 
     public slots:
-        void init();
-
+        // Slot para analizar datos recibidos
         void readData(const QByteArray package);
 
+        // Comandos
         void sendAlive();
-        void userLogin(const QString user, const QString password);
 
     private:
         enum Command : uint8_t
         {
-            ALIVE = 0xA0,
-            LOGIN = 0xA1
+            ALIVE = 0xA0
         };
 
         HMIProtocol *hmiProtocol = nullptr;
 
     private slots:
+        // Slot que analiza los comandos
         void newPackage(const uint8_t cmd, const QByteArray payload);
 };
 

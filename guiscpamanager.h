@@ -27,12 +27,10 @@ class GUISCPAManager : public QObject
         explicit GUISCPAManager(QObject *parent = nullptr);
         ~GUISCPAManager();
 
-        Q_INVOKABLE void connectToServer(const QString serverIP, const QString serverPort,
-                                         const QString user, const QString password);
+        Q_INVOKABLE void connectToServer(const QString serverIP, const QString serverPort);
 
     signals:
-        void hmiConnect(const QString serverIP, const QString serverPort,
-                        const QString user, const QString password);
+        void hmiConnect(const QString serverIP, const QString serverPort);
 
         void sessionInit();
 

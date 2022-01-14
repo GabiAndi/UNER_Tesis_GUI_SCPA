@@ -25,8 +25,7 @@ GUISCPAManager::~GUISCPAManager()
     delete hmiClientThread;
 }
 
-void GUISCPAManager::connectToServer(const QString serverIP, const QString serverPort,
-                                     const QString user, const QString password)
+void GUISCPAManager::connectToServer(const QString serverIP, const QString serverPort)
 {
-    emit hmiConnect(serverIP, serverPort, user, password);
+    emit hmiConnect(serverIP, serverPort);
 }
