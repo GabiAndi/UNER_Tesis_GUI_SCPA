@@ -12,6 +12,9 @@ GUISCPAManager::GUISCPAManager(QObject *parent)
     connect(hmiClientThread, &QThread::started, hmiClientManager, &HMIClientManager::init);
 
     connect(this, &GUISCPAManager::hmiConnect, hmiClientManager, &HMIClientManager::hmiConnect);
+    connect(this, &GUISCPAManager::sendLogin, hmiClientManager, &HMIClientManager::sendLogin);
+
+    connect(hmiClientManager, &HMIClientManager::hmiConnected, this, &GUISCPAManager::hmiConnected);
 
     hmiClientThread->start();
 }
@@ -29,3 +32,9 @@ void GUISCPAManager::connectToServer(const QString serverIP, const QString serve
 {
     emit hmiConnect(serverIP, serverPort);
 }
+
+void GUISCPAManager::loginToServer(const QString user, const QString password)
+{
+    emit sendLogin(user, password);
+}
+

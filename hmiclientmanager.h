@@ -28,10 +28,15 @@ class HMIClientManager : public QObject
         void readData(const QByteArray data);
         void writeData(const QByteArray cmd, const QByteArray payload);
 
+        void hmiConnected();
+        void hmiErrorConnected();
+        void hmiDisconnected();
+
     public slots:
         void init();
 
         void hmiConnect(const QString serverIP, const QString serverPort);
+        void sendLogin(const QString user, const QString password);
 
     private:
         // Conexion

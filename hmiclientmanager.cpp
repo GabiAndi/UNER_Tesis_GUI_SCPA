@@ -44,18 +44,26 @@ void HMIClientManager::hmiConnect(const QString serverIP, const QString serverPo
     serverSocket->connectToHost(serverIP, serverPort.toInt());
 }
 
+void HMIClientManager::sendLogin(const QString user, const QString password)
+{
+    protocolManager->sendLogin(user, password);
+}
+
 void HMIClientManager::clientConnection()
 {
-
+    // Informamos que se establecio una conexion
+    emit hmiConnected();
 }
 
 void HMIClientManager::clientErrorConnection(QAbstractSocket::SocketError error)
 {
-
+    // Informamos que hubo un error
+    emit hmiErrorConnected();
 }
 
 void HMIClientManager::clientDisconnection()
 {
-
+    // Informamos que se cerro una conexion
+    emit hmiDisconnected();
 }
 

@@ -35,6 +35,8 @@ class HMIProtocolManager : public QObject
         // Comandos
         void sendAlive();
 
+        void sendLogin(const QString user, const QString password);
+
     private:
         enum Command : uint8_t
         {

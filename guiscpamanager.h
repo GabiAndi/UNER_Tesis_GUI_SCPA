@@ -28,10 +28,15 @@ class GUISCPAManager : public QObject
         ~GUISCPAManager();
 
         Q_INVOKABLE void connectToServer(const QString serverIP, const QString serverPort);
+        Q_INVOKABLE void loginToServer(const QString user, const QString password);
 
     signals:
+        // Señales al hilo del administrador de cliente
         void hmiConnect(const QString serverIP, const QString serverPort);
+        void sendLogin(const QString user, const QString password);
 
+        // Señales para QML
+        void hmiConnected();
         void sessionInit();
 
     private:

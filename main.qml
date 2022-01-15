@@ -43,6 +43,14 @@ Window {
     GUISCPAManager {
         id: guiSCPAManager
 
+        /*
+         * Cuando el HMI informe que pudo realizar una conexion,
+         * inmediatamente tratamos de logearnos.
+         */
+        onHmiConnected: {
+            guiSCPAManager.sendLogin(textFieldUser.text, textFieldPassword.text);
+        }
+
         onSessionInit: {
 
         }
