@@ -43,15 +43,44 @@ Window {
     GUISCPAManager {
         id: guiSCPAManager
 
-        /*
-         * Cuando el HMI informe que pudo realizar una conexion,
-         * inmediatamente tratamos de logearnos.
-         */
-        onHmiConnected: {
+        // Conexion con el servidor correcta
+        onClientConnected: {
             guiSCPAManager.sendLogin(textFieldUser.text, textFieldPassword.text);
         }
 
-        onSessionInit: {
+        // Conexion con el servidor fallida por problemas de red
+        onClientFailConnected: {
+
+        }
+
+        // Conexion correcta, logeo correcto
+        onClientLoginConnected: {
+            stackLayout.currentIndex = 1;
+        }
+
+        // Conexion con el servidor erronea por logeo incorrecto
+        onClientErrorConnected: {
+
+        }
+
+        // Conexion con el servidor erronea por usuario ocupado
+        onClientBusyConnected: {
+
+        }
+
+        // Conexion con el servidor erronea por dejar la sesion activa
+        onClientPassConnected: {
+
+        }
+
+        // Conexion con el servidor erronea por error desconocido
+        onClientUndefinedErrorConnected: {
+
+        }
+
+        // Conexion con el servidor desconectada
+        onClientDisconnected:
+        {
 
         }
     }
@@ -152,7 +181,7 @@ Window {
                     Label {
                         Layout.alignment: Qt.AlignVCenter
 
-                        text: "Contraseña:"
+                        text: "Usuario:"
                         font.pointSize: 14
                     }
 
@@ -181,7 +210,7 @@ Window {
                     Label {
                         Layout.alignment: Qt.AlignVCenter
 
-                        text: "Usuario:"
+                        text: "Contraseña:"
                         font.pointSize: 14
                     }
 
@@ -227,6 +256,24 @@ Window {
                         // Conectar
                         guiSCPAManager.connectToServer(textFieldServerIP.text, textFieldServerPort.text);
                     }
+                }
+            }
+        }
+
+        Item {
+            width: stackLayout.width
+            height: stackLayout.height
+
+            Layout.alignment: Qt.AlignCenter
+
+            ColumnLayout {
+                anchors.centerIn: parent
+
+                Label {
+                    Layout.alignment: Qt.AlignHCenter
+
+                    text: "Logeo correcto"
+                    font.pointSize: 32
                 }
             }
         }

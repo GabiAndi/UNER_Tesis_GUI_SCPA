@@ -28,18 +28,33 @@ class GUISCPAManager : public QObject
         ~GUISCPAManager();
 
         Q_INVOKABLE void connectToServer(const QString serverIP, const QString serverPort);
+        Q_INVOKABLE void disconnectToServer();
+
         Q_INVOKABLE void loginToServer(const QString user, const QString password);
+        Q_INVOKABLE void forceLoginToServer(const QString user, const QString password, bool confirm);
 
     signals:
         // Señales al hilo del administrador de cliente
         void hmiConnect(const QString serverIP, const QString serverPort);
+        void hmiDisconnect();
+
+        // Comandos
         void sendLogin(const QString user, const QString password);
+        void sendForceLogin(const QString user, const QString password, bool confirm);
 
         // Señales para QML
-        void hmiConnected();
-        void sessionInit();
+        // Conexion
+        void clientConnected(); // Conexion realizada
+        void clientFailConnected(); // Error de red en la conexion
+        void clientLoginConnected(); // La conexion fue exitosa
+        void clientErrorConnected();    // Error de nombre de usuario o contraseña
+        void clientBusyConnected(); // Un usuario ya esta conectado
+        void clientPassConnected(); // Se decidio dejar la sesion actual activa
+        void clientUndefinedErrorConnected();   // Error no esperado
+        void clientDisconnected();  // Desconexion
 
     private:
+        // Hilo de administración de cliente
         QThread *hmiClientThread = nullptr;
         HMIClientManager *hmiClientManager = nullptr;
 };

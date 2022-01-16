@@ -18,7 +18,6 @@ set(PROJECT_SOURCES
     main.cpp
     guiscpamanager.h guiscpamanager.cpp
     hmiclientmanager.h hmiclientmanager.cpp
-    hmiprotocolmanager.h hmiprotocolmanager.cpp
 )
 
 # Libreria de protocolo de comunicacíon
