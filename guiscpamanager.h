@@ -13,6 +13,7 @@
 #include <QObject>
 
 #include <QThread>
+#include <QDebug>
 
 #include <qqml.h>
 
