@@ -10,7 +10,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 COMPONENTS Quick REQUIRED)
-find_package(Qt6 COMPONENTS QuickControls2 REQUIRED)
 find_package(Qt6 COMPONENTS Network REQUIRED)
 
 # Libreria de protocolo de comunicacíon
@@ -29,18 +28,21 @@ qt_add_resources(${PROJECT_NAME} "resources"
         "/"
     FILES
         "main.qml"
+        "HMIState.qml"
         "qtquickcontrols2.conf"
         "items/HMICircularProgressBar.qml"
         "items/HMIButton.qml"
+        "items/HMIDialogClientDisconnect.qml"
         "items/HMIDialogLoginCorrect.qml"
+        "items/HMIDialogLoginError.qml"
         "pages/PageHome.qml"
+        "pages/PageConnecting.qml"
         "pages/PageSCPATop.qml"
 )
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Qt6::Quick
-        Qt6::QuickControls2
         Qt6::Network
         HMIProtocol
 )

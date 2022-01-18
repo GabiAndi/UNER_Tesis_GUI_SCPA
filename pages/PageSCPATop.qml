@@ -9,17 +9,21 @@ import QtQuick.VirtualKeyboard
 import "../items"
 
 Item {
-    Label {
-        font.pointSize: 40
+    id: itemTop
 
-        text: "XD"
-    }
+    Pane {
+        width: parent.width
+        height: parent.height
 
-    HMIButton {
-        text: "Cerrar"
+        HMIButton {
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
 
-        onPressed: {
-            guiSCPAManager.disconnectToServer();
+            text: "Cerrar"
+
+            onPressed: {
+                guiSCPAManager.disconnectToServer();
+            }
         }
     }
 }

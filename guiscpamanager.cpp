@@ -19,14 +19,19 @@ GUISCPAManager::GUISCPAManager(QObject *parent)
     connect(this, &GUISCPAManager::sendForceLogin, hmiClientManager, &HMIClientManager::sendForceLogin);
 
     // Eventos del hilo de cliente a QML
+    // Conexion
     connect(hmiClientManager, &HMIClientManager::clientConnected, this, &GUISCPAManager::clientConnected);
-    connect(hmiClientManager, &HMIClientManager::clientFailConnected, this, &GUISCPAManager::clientFailConnected);
-    connect(hmiClientManager, &HMIClientManager::clientLoginConnected, this, &GUISCPAManager::clientLoginConnected);
     connect(hmiClientManager, &HMIClientManager::clientErrorConnected, this, &GUISCPAManager::clientErrorConnected);
-    connect(hmiClientManager, &HMIClientManager::clientBusyConnected, this, &GUISCPAManager::clientBusyConnected);
-    connect(hmiClientManager, &HMIClientManager::clientPassConnected, this, &GUISCPAManager::clientPassConnected);
-    connect(hmiClientManager, &HMIClientManager::clientUndefinedErrorConnected, this, &GUISCPAManager::clientUndefinedErrorConnected);
     connect(hmiClientManager, &HMIClientManager::clientDisconnected, this, &GUISCPAManager::clientDisconnected);
+
+    // Login
+    connect(hmiClientManager, &HMIClientManager::loginError, this, &GUISCPAManager::loginError);
+    connect(hmiClientManager, &HMIClientManager::loginForceRequired, this, &GUISCPAManager::loginForceRequired);
+    connect(hmiClientManager, &HMIClientManager::loginCorrect, this, &GUISCPAManager::loginCorrect);
+
+    // Desconexiones de parte del servidor
+    connect(hmiClientManager, &HMIClientManager::loginTimeOut, this, &GUISCPAManager::loginTimeOut);
+    connect(hmiClientManager, &HMIClientManager::otherUserLogin, this, &GUISCPAManager::otherUserLogin);
 
     hmiClientThread->start();
 }
@@ -55,7 +60,7 @@ void GUISCPAManager::loginToServer(const QString user, const QString password)
     emit sendLogin(user, password);
 }
 
-void GUISCPAManager::forceLoginToServer(const QString user, const QString password, bool confirm)
+void GUISCPAManager::forceLoginToServer(bool confirm)
 {
-    emit sendForceLogin(user, password, confirm);
+    emit sendForceLogin(confirm);
 }

@@ -6,23 +6,17 @@ import QtQuick.Layouts
 Dialog {
     id: dialogTop
 
-    property string userName: "userName"
-
     anchors.centerIn: parent
 
     parent: Overlay.overlay
 
     modal: true
-    title: "Login correcto"
+    title: "Se cerro la conexión"
     standardButtons: Dialog.Ok
 
     ColumnLayout {
         Label {
-            text: "El inicio de sesión fue correcto."
-        }
-
-        Label {
-            text: "Bienvenido " + userName + "."
+            text: "Se cerro la conexión con el controlador."
         }
     }
 }

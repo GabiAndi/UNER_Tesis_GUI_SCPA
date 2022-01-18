@@ -19,7 +19,7 @@ void HMIClientManager::init()
     // Conexion
     serverSocket = new QTcpSocket(this);
 
-    serverSocket->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
+    serverSocket->setSocketOption(QAbstractSocket::SocketOption::KeepAliveOption, 1);
 
     connect(serverSocket, &QTcpSocket::connected, this, &HMIClientManager::clientConnection);
     connect(serverSocket, &QTcpSocket::errorOccurred, this, &HMIClientManager::clientErrorConnection);
@@ -63,22 +63,17 @@ void HMIClientManager::sendLogin(const QString user, const QString password)
     hmiProtocol->write(Command::LOGIN, payload);
 }
 
-void HMIClientManager::sendForceLogin(const QString user, const QString password, bool confirm)
+void HMIClientManager::sendForceLogin(bool confirm)
 {
-    QByteArray payload;
-
-    payload.append(confirm);
-    payload.append((uint8_t)(user.length()));
-    payload.append(user.toUtf8());
-    payload.append((uint8_t)(password.length()));
-    payload.append(password.toUtf8());
-
-    hmiProtocol->write(Command::FORCE_LOGIN, payload);
+    hmiProtocol->write(Command::FORCE_LOGIN, confirm ?
+                           QByteArray().append(ForceLogin::FORCE_CONNECT) :
+                           QByteArray().append(ForceLogin::NO_FORCE_CONNECT)
+                           );
 }
 
 void HMIClientManager::sendAlive()
 {
-    hmiProtocol->write(Command::ALIVE, QByteArray().append(Payload::PAYLOAD_OK));
+    hmiProtocol->write(Command::KEEP_ALIVE, QByteArray().append(KeepAliveMode::REPLY));
 }
 
 void HMIClientManager::clientConnection()
@@ -90,7 +85,7 @@ void HMIClientManager::clientConnection()
 void HMIClientManager::clientErrorConnection(QAbstractSocket::SocketError error)
 {
     // Informamos que hubo un error
-    emit clientFailConnected();
+    emit clientErrorConnected();
 }
 
 void HMIClientManager::clientDisconnection()
@@ -102,13 +97,25 @@ void HMIClientManager::clientDisconnection()
 void HMIClientManager::newPackage(const uint8_t cmd, const QByteArray payload)
 {
     // Se analiza el comando recibido
-    switch (cmd)
+    switch ((Command)(cmd))
     {
-        // Alive
-        case Command::ALIVE:
+        /*
+         * ALIVE
+         *
+         * Si recibimos un alive lo devolvemos automaticamente
+         * sin informar al client manager.
+         */
+        case Command::KEEP_ALIVE:
         {
-            if ((uint8_t)(payload.at(0)) != Payload::PAYLOAD_OK)
-                break;
+            if ((uint8_t)(payload.at(0)) == KeepAliveMode::REPLY)
+            {
+                hmiProtocol->write(Command::KEEP_ALIVE, QByteArray().append(KeepAliveMode::REQUEST));
+            }
+
+            else if ((uint8_t)(payload.at(0)) == KeepAliveMode::REQUEST)
+            {
+
+            }
 
             break;
         }
@@ -116,26 +123,35 @@ void HMIClientManager::newPackage(const uint8_t cmd, const QByteArray payload)
         // Login request
         case Command::LOGIN_REQUEST:
         {
-            switch ((uint8_t)(payload.at(0)))
+            switch ((LoginRequest)(payload.at(0)))
             {
-                case LoginRequest::LOGIN_OK:
-                    emit clientLoginConnected();
+                case LoginRequest::LOGIN_CORRECT:
+                    emit loginCorrect();
+                    break;
+
+                case LoginRequest::LOGIN_FORCE_REQUIRED:
+                    emit loginForceRequired();
                     break;
 
                 case LoginRequest::LOGIN_ERROR:
-                    emit clientErrorConnected();
+                    emit loginError();
+                    break;
+            }
+
+            break;
+        }
+
+        // Informe de desconexión
+        case Command::DISCONNECT_CODE:
+        {
+            switch ((DisconnectCode)(payload.at(0)))
+            {
+                case DisconnectCode::LOGIN_TIMEOUT:
+                    emit loginTimeOut();
                     break;
 
-                case LoginRequest::LOGIN_BUSY:
-                    emit clientBusyConnected();
-                    break;
-
-                case LoginRequest::LOGIN_PASS:
-                    emit clientPassConnected();
-                    break;
-
-                default:
-                    emit clientUndefinedErrorConnected();
+                case DisconnectCode::OTHER_USER_LOGIN:
+                    emit otherUserLogin();
                     break;
             }
 

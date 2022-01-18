@@ -13,16 +13,16 @@ Dialog {
     parent: Overlay.overlay
 
     modal: true
-    title: "Login correcto"
+    title: "Error de inicio de sesión"
     standardButtons: Dialog.Ok
 
     ColumnLayout {
         Label {
-            text: "El inicio de sesión fue correcto."
+            text: "No se puedo iniciar sesión como " + userName + "."
         }
 
         Label {
-            text: "Bienvenido " + userName + "."
+            text: "Se puede deber a un error de usuario o contraseña."
         }
     }
 }

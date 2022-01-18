@@ -11,7 +11,8 @@ import "../items"
 Item {
     id: itemTop
 
-    property bool connecting: false
+    property string serverIP: textFieldServerIP.text
+    property string serverPort: textFieldServerPort.text
 
     property string userName: textFieldUserName.text
     property string password: textFieldPassword.text
@@ -20,12 +21,12 @@ Item {
         width: parent.width
         height: parent.height
 
-        Layout.alignment: Qt.AlignCenter
-
         ColumnLayout {
             anchors.centerIn: parent
 
             Label {
+                Layout.alignment: Qt.AlignHCenter
+
                 text: "Conectar al sistema"
                 font.pointSize: 32
             }
@@ -132,7 +133,7 @@ Item {
                     EnterKeyAction.actionId: EnterKeyAction.Done
 
                     onAccepted: {
-                        this.focus = false;
+                        textFieldPassword.focus = false;
                     }
                 }
             }
@@ -159,12 +160,10 @@ Item {
 
                     text: "Conectar"
 
-                    enabled: !itemTop.connecting
-
                     onClicked: {
-                        guiSCPAManager.connectToServer(textFieldServerIP.text, textFieldServerPort.text);
+                        stackView.push(componentPageConnecting);
 
-                        itemTop.connecting = true;
+                        guiSCPAManager.connectToServer(textFieldServerIP.text, textFieldServerPort.text);
                     }
                 }
             }

@@ -10,6 +10,7 @@ import QtQuick.VirtualKeyboard.Settings
 
 import GUISCPA
 
+import "."
 import "items"
 import "pages"
 
@@ -26,6 +27,10 @@ ApplicationWindow {
 
     title: "Control de usuario"
 
+    HMIState {
+        id: hmiState
+    }
+
     GUISCPAManager {
         id: guiSCPAManager
 
@@ -34,40 +39,35 @@ ApplicationWindow {
             guiSCPAManager.sendLogin(pageHome.userName, pageHome.password);
         }
 
-        // Conexion con el servidor fallida por problemas de red
-        onClientFailConnected: {
-            pageHome.connecting = false;
-        }
-
-        // Conexion correcta, logeo correcto
-        onClientLoginConnected: {
-            hmiDialogLoginCorrect.open();
-            stackView.push(componentPageSCPATop);
-        }
-
-        // Conexion con el servidor erronea por logeo incorrecto
-        onClientErrorConnected: {
-            pageHome.connecting = false;
-        }
-
-        // Conexion con el servidor erronea por usuario ocupado
-        onClientBusyConnected: {
-
-        }
-
-        // Conexion con el servidor erronea por dejar la sesion activa
-        onClientPassConnected: {
-            pageHome.connecting = false;
-        }
-
-        // Conexion con el servidor erronea por error desconocido
-        onClientUndefinedErrorConnected: {
-            pageHome.connecting = false;
-        }
-
-        // Conexion con el servidor desconectada
+        // Conexion desconectada
         onClientDisconnected: {
-            pageHome.connecting = false;
+            if (hmiState.login) {
+                hmiDialogClientDisconnect.open();
+            }
+
+            stackView.pop(null);
+
+            // Establecemos los valor
+            hmiState.login = false;
+        }
+
+        // Logeo correcto
+        onLoginCorrect: {
+            hmiDialogLoginCorrect.userName = pageHome.userName;
+            hmiDialogLoginCorrect.open();
+
+            stackView.push(componentPageSCPATop);
+
+            // Establecemos los valor
+            hmiState.login = true;
+        }
+
+        // Error de usuario o contraseña
+        onLoginError: {
+            hmiDialogLoginError.userName = pageHome.userName;
+            hmiDialogLoginError.open();
+
+            guiSCPAManager.hmiDisconnect();
         }
     }
 
@@ -77,14 +77,34 @@ ApplicationWindow {
         width: parent.width
         height: parent.height
 
-        Layout.alignment: Qt.AlignCenter
-
         initialItem: PageHome {
             id: pageHome
+
+            width: stackView.width
+            height: stackView.height
+
+            HMIDialogClientDisconnect {
+                id: hmiDialogClientDisconnect
+            }
 
             HMIDialogLoginCorrect {
                 id: hmiDialogLoginCorrect
             }
+
+            HMIDialogLoginError {
+                id: hmiDialogLoginError
+            }
+        }
+    }
+
+    Component {
+        id: componentPageConnecting
+
+        PageConnecting {
+            id: pageConnecting
+
+            width: stackView.width
+            height: stackView.height
         }
     }
 
@@ -93,6 +113,9 @@ ApplicationWindow {
 
         PageSCPATop {
             id: pageSCPATop
+
+            width: stackView.width
+            height: stackView.height
         }
     }
 }

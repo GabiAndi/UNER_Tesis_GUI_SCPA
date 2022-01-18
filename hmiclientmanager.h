@@ -13,7 +13,6 @@
 #include <QObject>
 
 #include <QTcpSocket>
-#include <QTimer>
 
 #include "hmiprotocol.h"
 #include "hmiprotocoldata.h"
@@ -31,14 +30,18 @@ class HMIClientManager : public QObject
     signals:
         // Señales para QML
         // Conexion
-        void clientConnected(); // Conexion realizada
-        void clientFailConnected(); // Error de red en la conexion
-        void clientLoginConnected(); // La conexion fue exitosa
-        void clientErrorConnected();    // Error de nombre de usuario o contraseña
-        void clientBusyConnected(); // Un usuario ya esta conectado
-        void clientPassConnected(); // Se decidio dejar la sesion actual activa
-        void clientUndefinedErrorConnected();   // Error no esperado
+        void clientConnected(); // Conexion
+        void clientErrorConnected();    // Error de red
         void clientDisconnected();  // Desconexion
+
+        // Login
+        void loginError(); // Error de usuario o contraseña
+        void loginForceRequired(); // Ya hay un usuario conectado
+        void loginCorrect(); // Logeo exitoso
+
+        // Desconexiones de parte del servidor
+        void loginTimeOut();    // Tiempo de conexion excedido
+        void otherUserLogin();  // Otro usuario inicio sesión
 
     public slots:
         void init();
@@ -49,7 +52,8 @@ class HMIClientManager : public QObject
 
         // Comandos
         void sendLogin(const QString user, const QString password);
-        void sendForceLogin(const QString user, const QString password, bool confirm);
+        void sendForceLogin(bool confirm);
+
         void sendAlive();
 
     private:
