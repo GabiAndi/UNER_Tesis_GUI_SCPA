@@ -27,95 +27,115 @@ ApplicationWindow {
 
     title: "Control de usuario"
 
-    HMIState {
-        id: hmiState
-    }
-
     GUISCPAManager {
         id: guiSCPAManager
 
-        // Conexion con el servidor correcta
+        // Eventos del cliente TCP/IP
+        // Conexion al servidor
         onClientConnected: {
-            guiSCPAManager.sendLogin(pageHome.userName, pageHome.password);
+
         }
 
-        // Conexion desconectada
+        // Error de conexión al servidor
+        onClientErrorConnected: {
+            hmiDialogClientErrorConnected.open();
+        }
+
+        // Desconexión del servidor
         onClientDisconnected: {
-            if (hmiState.login) {
-                hmiDialogClientDisconnect.open();
-            }
-
-            stackView.pop(null);
-
-            // Establecemos los valor
-            hmiState.login = false;
+            hmiDialogClientDisconnected.open();
         }
 
-        // Logeo correcto
+        // Error de desconexión
+        onClientErrorDisconnected: {
+            hmiDialogErrorClientDisconnected.open();
+        }
+
+        // Eventos de Login
+        // Login correcto
         onLoginCorrect: {
-            hmiDialogLoginCorrect.userName = pageHome.userName;
             hmiDialogLoginCorrect.open();
-
-            stackView.push(componentPageSCPATop);
-
-            // Establecemos los valor
-            hmiState.login = true;
         }
 
-        // Error de usuario o contraseña
-        onLoginError: {
-            hmiDialogLoginError.userName = pageHome.userName;
-            hmiDialogLoginError.open();
+        // Ya hay otro usuario conectado
+        onLoginForceRequired: {
+            hmiDialogLoginForceRequired.open();
+        }
 
-            guiSCPAManager.hmiDisconnect();
+        // Error de logeo
+        onLoginError: {
+            hmiDialogLoginError.open();
+        }
+
+        // Eventos de desconexión por parte del servidor
+        // Se desconecto por timeout
+        onLoginTimeOut: {
+            hmiDialogLoginTimeOut.open();
+        }
+
+        // Un nuevo usuario inicio sesión
+        onOtherUserLogin: {
+            hmiDialogOtherUserLogin.open();
         }
     }
 
+    // Stackview
     StackView {
         id: stackView
 
         width: parent.width
         height: parent.height
 
-        initialItem: PageHome {
-            id: pageHome
-
-            width: stackView.width
-            height: stackView.height
-
-            HMIDialogClientDisconnect {
-                id: hmiDialogClientDisconnect
-            }
-
-            HMIDialogLoginCorrect {
-                id: hmiDialogLoginCorrect
-            }
-
-            HMIDialogLoginError {
-                id: hmiDialogLoginError
-            }
-        }
-    }
-
-    Component {
-        id: componentPageConnecting
-
-        PageConnecting {
-            id: pageConnecting
+        initialItem: PageConnect {
+            id: pageConnect
 
             width: stackView.width
             height: stackView.height
         }
     }
 
-    Component {
-        id: componentPageSCPATop
+    // Dialogos
+    HMIDialogClientErrorConnected {
+        id: hmiDialogClientErrorConnected
+    }
 
-        PageSCPATop {
-            id: pageSCPATop
+    HMIDialogClientDisconnected {
+        id: hmiDialogClientDisconnected
+    }
 
-            width: stackView.width
-            height: stackView.height
+    HMIDialogClientErrorDisconnected {
+        id: hmiDialogErrorClientDisconnected
+    }
+
+    HMIDialogLoginCorrect {
+        id: hmiDialogLoginCorrect
+    }
+
+    HMIDialogLoginForceRequired {
+        id: hmiDialogLoginForceRequired
+
+        // Si se desea iniciar sesión de todos modos
+        onAccepted: {
+            guiSCPAManager.sendForceLogin(true);
         }
+
+        // Si no se desea iniciar sesión
+        onRejected: {
+            guiSCPAManager.sendForceLogin(false);
+
+            guiSCPAManager.hmiDisconnect();
+        }
+    }
+
+    HMIDialogLoginError {
+        id: hmiDialogLoginError
+    }
+
+    HMIDialogLoginTimeOut {
+        id: hmiDialogLoginTimeOut
+    }
+
+    HMIDialogOtherUserLogin {
+        id: hmiDialogOtherUserLogin
     }
 }

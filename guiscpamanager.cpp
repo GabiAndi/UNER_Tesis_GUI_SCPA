@@ -23,6 +23,7 @@ GUISCPAManager::GUISCPAManager(QObject *parent)
     connect(hmiClientManager, &HMIClientManager::clientConnected, this, &GUISCPAManager::clientConnected);
     connect(hmiClientManager, &HMIClientManager::clientErrorConnected, this, &GUISCPAManager::clientErrorConnected);
     connect(hmiClientManager, &HMIClientManager::clientDisconnected, this, &GUISCPAManager::clientDisconnected);
+    connect(hmiClientManager, &HMIClientManager::clientErrorDisconnected, this, &GUISCPAManager::clientErrorDisconnected);
 
     // Login
     connect(hmiClientManager, &HMIClientManager::loginError, this, &GUISCPAManager::loginError);

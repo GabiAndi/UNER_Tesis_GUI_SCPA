@@ -46,8 +46,9 @@ class GUISCPAManager : public QObject
         // Señales para QML
         // Conexion
         void clientConnected(); // Conexion
-        void clientErrorConnected();    // Error de red
+        void clientErrorConnected();    // Error al conectar
         void clientDisconnected();  // Desconexion
+        void clientErrorDisconnected();    // Error al desconectar
 
         // Login
         void loginError(); // Error de usuario o contraseña

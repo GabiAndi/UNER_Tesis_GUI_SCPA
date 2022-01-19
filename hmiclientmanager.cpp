@@ -12,17 +12,25 @@ HMIClientManager::~HMIClientManager()
     delete hmiProtocol;
 
     delete serverSocket;
+
+    delete hmiClientState;
 }
 
 void HMIClientManager::init()
 {
+    // Estado
+    hmiClientState = new hmi_client_state_t;
+
+    hmiClientState->disconnectionCode = false;
+    hmiClientState->connected = false;
+
     // Conexion
     serverSocket = new QTcpSocket(this);
 
     serverSocket->setSocketOption(QAbstractSocket::SocketOption::KeepAliveOption, 1);
 
     connect(serverSocket, &QTcpSocket::connected, this, &HMIClientManager::clientConnection);
-    connect(serverSocket, &QTcpSocket::errorOccurred, this, &HMIClientManager::clientErrorConnection);
+    connect(serverSocket, &QTcpSocket::errorOccurred, this, &HMIClientManager::clientErrorOcurred);
     connect(serverSocket, &QTcpSocket::disconnected, this, &HMIClientManager::clientDisconnection);
 
     // Protocolo
@@ -80,18 +88,30 @@ void HMIClientManager::clientConnection()
 {
     // Informamos que se establecio una conexion
     emit clientConnected();
+
+    hmiClientState->disconnectionCode = false;
+    hmiClientState->connected = true;
 }
 
-void HMIClientManager::clientErrorConnection(QAbstractSocket::SocketError error)
+void HMIClientManager::clientErrorOcurred(QAbstractSocket::SocketError error)
 {
     // Informamos que hubo un error
-    emit clientErrorConnected();
+    if (!hmiClientState->connected)
+        emit clientErrorConnected();
+
+    else if (!hmiClientState->disconnectionCode)
+        emit clientErrorDisconnected();
+
+    hmiClientState->connected = false;
 }
 
 void HMIClientManager::clientDisconnection()
 {
     // Informamos que se cerro una conexion
-    emit clientDisconnected();
+    if (hmiClientState->connected && !hmiClientState->disconnectionCode)
+        emit clientDisconnected();
+
+    hmiClientState->connected = false;
 }
 
 void HMIClientManager::newPackage(const uint8_t cmd, const QByteArray payload)
@@ -144,6 +164,8 @@ void HMIClientManager::newPackage(const uint8_t cmd, const QByteArray payload)
         // Informe de desconexión
         case Command::DISCONNECT_CODE:
         {
+            hmiClientState->disconnectionCode = true;
+
             switch ((DisconnectCode)(payload.at(0)))
             {
                 case DisconnectCode::LOGIN_TIMEOUT:

@@ -31,8 +31,9 @@ class HMIClientManager : public QObject
         // Señales para QML
         // Conexion
         void clientConnected(); // Conexion
-        void clientErrorConnected();    // Error de red
+        void clientErrorConnected();    // Error al conectar
         void clientDisconnected();  // Desconexion
+        void clientErrorDisconnected();    // Error al desconectar
 
         // Login
         void loginError(); // Error de usuario o contraseña
@@ -63,10 +64,19 @@ class HMIClientManager : public QObject
         // Protocolo
         HMIProtocol *hmiProtocol = nullptr;
 
+        // Estado
+        typedef struct hmi_client_state
+        {
+            bool disconnectionCode;
+            bool connected;
+        }hmi_client_state_t;
+
+        hmi_client_state_t *hmiClientState = nullptr;
+
     private slots:
         // Eventos
         void clientConnection();
-        void clientErrorConnection(QAbstractSocket::SocketError error);
+        void clientErrorOcurred(QAbstractSocket::SocketError error);
         void clientDisconnection();
 
         // Slot que analiza los comandos

@@ -11,9 +11,6 @@ import "../items"
 Item {
     id: itemTop
 
-    property string serverIP: textFieldServerIP.text
-    property string serverPort: textFieldServerPort.text
-
     property string userName: textFieldUserName.text
     property string password: textFieldPassword.text
 
@@ -27,7 +24,7 @@ Item {
             Label {
                 Layout.alignment: Qt.AlignHCenter
 
-                text: "Conectar al sistema"
+                text: "Iniciar sesión"
                 font.pointSize: 32
             }
 
@@ -39,59 +36,7 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
 
                 Label {
-                    text: "Dirección:"
-                    font.pointSize: 14
-                }
-
-                TextField {
-                    id: textFieldServerIP
-
-                    horizontalAlignment: Text.AlignHCenter
-
-                    placeholderText: "192.168.0.100"
-                    text: "127.0.0.1"
-
-                    inputMethodHints: Qt.ImhPreferNumbers
-
-                    EnterKeyAction.actionId: EnterKeyAction.Next
-
-                    onAccepted: {
-                        textFieldServerPort.focus = true;
-                    }
-                }
-            }
-
-            RowLayout {
-                Layout.alignment: Qt.AlignHCenter
-
-                Label {
-                    text: "Puerto:"
-                    font.pointSize: 14
-                }
-
-                TextField {
-                    id: textFieldServerPort
-
-                    horizontalAlignment: Text.AlignHCenter
-
-                    placeholderText: "33600"
-                    text: "33600"
-
-                    inputMethodHints: Qt.ImhPreferNumbers
-
-                    EnterKeyAction.actionId: EnterKeyAction.Next
-
-                    onAccepted: {
-                        textFieldUserName.focus = true;
-                    }
-                }
-            }
-
-            RowLayout {
-                Layout.alignment: Qt.AlignHCenter
-
-                Label {
-                    text: "Usuario:"
+                    text: "Nombre de usuario:"
                     font.pointSize: 14
                 }
 
@@ -126,14 +71,17 @@ Item {
 
                     horizontalAlignment: Text.AlignHCenter
 
+                    placeholderText: "contraseña"
                     text: "0123456789"
 
-                    echoMode: TextField.Password
+                    echoMode: TextField.PasswordEchoOnEdit
 
                     EnterKeyAction.actionId: EnterKeyAction.Done
 
                     onAccepted: {
                         textFieldPassword.focus = false;
+
+                        buttonLogin.clicked();
                     }
                 }
             }
@@ -146,24 +94,20 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
 
                 HMIButton {
-                    id: buttonClose
-
-                    text: "Cerrar"
+                    text: "Desconectar"
 
                     onClicked: {
-                        Qt.exit(0);
+                        guiSCPAManager.hmiDisconnect();
                     }
                 }
 
                 HMIButton {
-                    id: buttonConnect
+                    id: buttonLogin
 
-                    text: "Conectar"
+                    text: "Iniciar sesión"
 
                     onClicked: {
-                        stackView.push(componentPageConnecting);
-
-                        guiSCPAManager.connectToServer(textFieldServerIP.text, textFieldServerPort.text);
+                        guiSCPAManager.sendLogin(textFieldUserName.text, textFieldPassword.text);
                     }
                 }
             }
