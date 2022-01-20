@@ -17,9 +17,16 @@ import "pages"
 ApplicationWindow {
     id: applicationWindow
 
+    // Propiedades
+    property string serverIP: ""
+    property string serverPort: ""
+
+    property string userName: ""
+    property string password: ""
+
     // Resolucion de pantalla
     width: 800
-    height: 480
+    height: 600
 
     // Modo de pantalla
     visible: true
@@ -33,7 +40,7 @@ ApplicationWindow {
         // Eventos del cliente TCP/IP
         // Conexion al servidor
         onClientConnected: {
-
+            stackView.push(hmiLogin);
         }
 
         // Error de conexión al servidor
@@ -44,17 +51,24 @@ ApplicationWindow {
         // Desconexión del servidor
         onClientDisconnected: {
             hmiDialogClientDisconnected.open();
+
+            stackView.pop(null);
         }
 
         // Error de desconexión
         onClientErrorDisconnected: {
             hmiDialogErrorClientDisconnected.open();
+
+            stackView.pop(null);
         }
 
         // Eventos de Login
         // Login correcto
         onLoginCorrect: {
+            hmiDialogLoginCorrect.userName = applicationWindow.userName;
             hmiDialogLoginCorrect.open();
+
+            stackView.push(hmiSCPATop);
         }
 
         // Ya hay otro usuario conectado
@@ -64,6 +78,9 @@ ApplicationWindow {
 
         // Error de logeo
         onLoginError: {
+            hmiDialogLoginError.userName = applicationWindow.userName;
+            hmiDialogLoginError.open();
+
             hmiDialogLoginError.open();
         }
 
@@ -71,11 +88,15 @@ ApplicationWindow {
         // Se desconecto por timeout
         onLoginTimeOut: {
             hmiDialogLoginTimeOut.open();
+
+            stackView.pop(null);
         }
 
         // Un nuevo usuario inicio sesión
         onOtherUserLogin: {
             hmiDialogOtherUserLogin.open();
+
+            stackView.pop(null);
         }
     }
 
@@ -86,12 +107,7 @@ ApplicationWindow {
         width: parent.width
         height: parent.height
 
-        initialItem: PageConnect {
-            id: pageConnect
-
-            width: stackView.width
-            height: stackView.height
-        }
+        initialItem: hmiConnect
     }
 
     // Dialogos
@@ -137,5 +153,50 @@ ApplicationWindow {
 
     HMIDialogOtherUserLogin {
         id: hmiDialogOtherUserLogin
+    }
+
+    // Paginas
+    Component {
+        id: hmiConnect
+
+        HMIConnect {
+            buttonClose.onClicked: {
+                Qt.quit();
+            }
+
+            buttonConnect.onClicked: {
+                applicationWindow.serverIP = textFieldServerIP.text;
+                applicationWindow.serverPort = textFieldServerPort.text;
+
+                guiSCPAManager.connectToServer(textFieldServerIP.text, textFieldServerPort.text);
+            }
+        }
+    }
+
+    Component {
+        id: hmiLogin
+
+        HMILogin {
+            buttonDisconnect.onClicked: {
+                guiSCPAManager.disconnectToServer();
+            }
+
+            buttonLogin.onClicked: {
+                applicationWindow.userName = textFieldUserName.text;
+                applicationWindow.password = textFieldPassword.text;
+
+                guiSCPAManager.loginToServer(textFieldUserName.text, textFieldPassword.text);
+            }
+        }
+    }
+
+    Component {
+        id: hmiSCPATop
+
+        HMISCPATop {
+            buttonDisconnect.onClicked: {
+                guiSCPAManager.disconnectToServer();
+            }
+        }
     }
 }

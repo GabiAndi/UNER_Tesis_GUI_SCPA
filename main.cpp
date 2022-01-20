@@ -14,7 +14,7 @@
 int main(int argc, char *argv[])
 {
     // Importamos el modulo del teclado virtual
-    //qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
+    qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 
     // Registramos el manejador al QML
     qmlRegisterType<GUISCPAManager>("GUISCPA", 1, 0, "GUISCPAManager");
