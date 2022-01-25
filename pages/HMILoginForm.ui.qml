@@ -40,7 +40,6 @@ Item {
                     text: "gabi"
                     horizontalAlignment: Text.AlignHCenter
                     placeholderText: qsTr("user")
-                    inputMethodHints: "ImhPreferLowercase"
                 }
             }
 
@@ -55,9 +54,7 @@ Item {
                     id: textFieldPassword
                     text: "0123456789"
                     horizontalAlignment: Text.AlignHCenter
-                    font.hintingPreference: Font.PreferFullHinting
                     placeholderText: qsTr("")
-                    echoMode: TextField.PasswordEchoOnEdit
                 }
             }
 

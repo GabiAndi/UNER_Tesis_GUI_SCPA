@@ -3,18 +3,14 @@ import QtQuick.Controls 6.2
 import QtQuick.Layouts 6.0
 
 Item {
-    property alias buttonConnect: buttonConnect
-    property alias buttonClose: buttonClose
     property alias textFieldServerPort: textFieldServerPort
     property alias textFieldServerIP: textFieldServerIP
+    property alias buttonConnect: buttonConnect
+    property alias buttonClose: buttonClose
 
     Pane {
         id: pane
         anchors.fill: parent
-        anchors.rightMargin: 0
-        anchors.bottomMargin: 0
-        anchors.leftMargin: 0
-        anchors.topMargin: 0
 
         ColumnLayout {
             id: columnLayout
@@ -44,7 +40,6 @@ Item {
                     text: "127.0.0.1"
                     horizontalAlignment: Text.AlignHCenter
                     placeholderText: qsTr("192.168.0.200")
-                    inputMethodHints: "ImhPreferNumbers"
                 }
             }
 
@@ -60,7 +55,6 @@ Item {
                     text: "33600"
                     horizontalAlignment: Text.AlignHCenter
                     placeholderText: qsTr("33600")
-                    inputMethodHints: "ImhPreferNumbers"
                 }
             }
 

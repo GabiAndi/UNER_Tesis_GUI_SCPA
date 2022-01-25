@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="3.1305783mm"
+   height="7.877737mm"
+   viewBox="0 0 3.1305781 7.8777367"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.1.1 (1:1.1+202109281949+c3084ef5ed)"
+   sodipodi:docname="HMISCPALv.svg"
+   inkscape:export-filename="/home/gabi/Documentos/gabi-not/Documentos/Repositorios/UNER_Tesis/Diagramas de flujo/Planta de tratamiento biologico/Proceso.png"
+   inkscape:export-xdpi="513.13135"
+   inkscape:export-ydpi="513.13135"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#8f908d"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:zoom="11.313709"
+     inkscape:cx="0.3093592"
+     inkscape:cy="19.754794"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer3"
+     inkscape:document-rotation="0"
+     showgrid="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:pagecheckerboard="true"
+     inkscape:snap-grids="true"
+     inkscape:snap-page="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     lock-margins="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid869"
+       dotted="false"
+       originx="-37.974337"
+       originy="-95.790962" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="Fondo"
+     transform="translate(-37.974356,-95.791043)" />
+  <g
+     inkscape:label="Logo de EGGER"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline"
+     transform="translate(-37.974356,-95.791043)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Titulo"
+     style="display:inline"
+     transform="translate(-37.974356,-95.791043)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Proceso"
+     style="display:inline;opacity:1"
+     transform="translate(-37.974356,-95.791043)">
+    <g
+       id="g1201"
+       transform="matrix(0.03857655,0,0,0.03857655,223.70415,46.255841)" />
+    <g
+       id="g1203"
+       transform="matrix(0.03857655,0,0,0.03857655,223.70415,46.255841)" />
+    <g
+       id="g1205"
+       transform="matrix(0.03857655,0,0,0.03857655,223.70415,46.255841)" />
+    <g
+       id="g1207"
+       transform="matrix(0.03857655,0,0,0.03857655,223.70415,46.255841)" />
+    <g
+       id="g1209"
+       transform="matrix(0.03857655,0,0,0.03857655,223.70415,46.255841)" />
+    <g
+       id="g1211"
+       transform="matrix(0.03857655,0,0,0.03857655,223.70415,46.255841)" />
+    <g
+       id="g1213"
+       transform="matrix(0.03857655,0,0,0.03857655,223.70415,46.255841)" />
+    <g
+       id="g1215"
+       transform="matrix(0.03857655,0,0,0.03857655,223.70415,46.255841)" />
+    <g
+       id="g1217"
+       transform="matrix(0.03857655,0,0,0.03857655,223.70415,46.255841)" />
+    <g
+       id="g1219"
+       transform="matrix(0.03857655,0,0,0.03857655,223.70415,46.255841)" />
+    <g
+       id="g1221"
+       transform="matrix(0.03857655,0,0,0.03857655,223.70415,46.255841)" />
+    <g
+       id="g1223"
+       transform="matrix(0.03857655,0,0,0.03857655,223.70415,46.255841)" />
+    <g
+       id="g1225"
+       transform="matrix(0.03857655,0,0,0.03857655,223.70415,46.255841)" />
+    <g
+       id="g1227"
+       transform="matrix(0.03857655,0,0,0.03857655,223.70415,46.255841)" />
+    <g
+       id="g1229"
+       transform="matrix(0.03857655,0,0,0.03857655,223.70415,46.255841)" />
+    <g
+       id="g2024"
+       transform="matrix(0.30726645,0,0,0.30726645,136.60543,76.07402)"
+       style="fill:#ffffff;fill-opacity:1" />
+    <g
+       id="g2024-4-17"
+       transform="matrix(0.30726645,0,0,0.30726645,-29.04737,70.873334)"
+       style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1">
+      <path
+         d="m 227.83271,81.094791 h -9.2075 c -0.29104,0 -0.50271,0.211667 -0.50271,0.502709 v 24.63271 c 0,0.29104 0.21167,0.50271 0.50271,0.50271 h 9.18104 c 0.29104,0 0.50271,-0.21167 0.50271,-0.50271 V 81.5975 c 0.0265,-0.291042 -0.21167,-0.502709 -0.47625,-0.502709 z m -0.76729,24.368129 -7.67292,-0.0265 v -0.635 h 2.54 c 0.37042,0 0.635,-0.29104 0.635,-0.635 0,-0.37042 -0.29104,-0.635 -0.635,-0.635 h -2.54 v -1.24354 h 1.00542 c 0.37042,0 0.635,-0.29105 0.635,-0.635 0,-0.37042 -0.29104,-0.635 -0.635,-0.635 h -1.00542 v -1.243546 h 1.00542 c 0.37042,0 0.635,-0.291041 0.635,-0.635 0,-0.370416 -0.29104,-0.635 -0.635,-0.635 l -1.00542,-0.02646 v -1.243542 h 2.54 c 0.37042,0 0.635,-0.291041 0.635,-0.635 0,-0.370416 -0.29104,-0.635 -0.635,-0.635 l -2.54,-0.02646 V 94.69433 h 1.00542 c 0.37042,0 0.635,-0.291041 0.635,-0.634999 0,-0.370417 -0.29104,-0.635 -0.635,-0.635 h -1.00542 v -1.243542 h 1.00542 c 0.37042,0 0.635,-0.291042 0.635,-0.635 0,-0.370417 -0.29104,-0.635 -0.635,-0.635 h -1.00542 v -1.243542 h 2.54 c 0.37042,0 0.635,-0.291041 0.635,-0.635 0,-0.370416 -0.29104,-0.635 -0.635,-0.635 h -2.54 V 87.15375 h 1.00542 c 0.37042,0 0.635,-0.291042 0.635,-0.635 0,-0.370417 -0.29104,-0.635 -0.635,-0.635 h -1.00542 v -1.243542 h 1.00542 c 0.37042,0 0.635,-0.291042 0.635,-0.635 0,-0.370417 -0.29104,-0.635 -0.635,-0.635 h -1.00542 v -0.899583 h 7.67292 z"
+         id="path2005-8-4"
+         style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-opacity:1" />
+    </g>
+  </g>
+  <style
+     type="text/css"
+     id="style1130">
+	.st0{fill:#16ADE1;}
+	.st1{fill:#1B3954;}
+</style>
+</svg>

@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 COMPONENTS Quick REQUIRED)
 find_package(Qt6 COMPONENTS Network REQUIRED)
+find_package(Qt6 COMPONENTS Svg REQUIRED)
 
 # Libreria de protocolo de comunicacíon
 add_subdirectory("../HMIProtocol" "../build-HMIProtocol")
@@ -30,25 +31,34 @@ qt_add_resources(${PROJECT_NAME} "resources"
         "main.qml"
         "qtquickcontrols2.conf"
         "items/HMICircularProgressBar.qml"
-        "items/HMIDialogClientErrorConnected.qml"
-        "items/HMIDialogClientDisconnected.qml"
-        "items/HMIDialogClientErrorDisconnected.qml"
-        "items/HMIDialogLoginForceRequired.qml"
-        "items/HMIDialogLoginCorrect.qml"
-        "items/HMIDialogLoginError.qml"
-        "items/HMIDialogLoginTimeOut.qml"
-        "items/HMIDialogOtherUserLogin.qml"
+        "items/HMISCPAVariableIndicator.qml"
+        "dialogs/HMIDialogClientErrorConnected.qml"
+        "dialogs/HMIDialogClientDisconnected.qml"
+        "dialogs/HMIDialogClientErrorDisconnected.qml"
+        "dialogs/HMIDialogLoginForceRequired.qml"
+        "dialogs/HMIDialogLoginCorrect.qml"
+        "dialogs/HMIDialogLoginError.qml"
+        "dialogs/HMIDialogLoginTimeOut.qml"
+        "dialogs/HMIDialogOtherUserLogin.qml"
+        "process/HMISCPAPileta.svg"
+        "process/HMISCPASopladores.svg"
+        "icons/HMISCPAOD.svg"
+        "icons/HMISCPALv.svg"
+        "icons/HMISCPATemp.svg"
         "pages/HMIConnect.qml"
         "pages/HMIConnectForm.ui.qml"
         "pages/HMILogin.qml"
         "pages/HMILoginForm.ui.qml"
         "pages/HMISCPATop.qml"
         "pages/HMISCPATopForm.ui.qml"
+        "pages/HMISCPASopladores.qml"
+        "pages/HMISCPASopladoresForm.ui.qml"
 )
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Qt6::Quick
         Qt6::Network
+        Qt6::Svg
         HMIProtocol
 )

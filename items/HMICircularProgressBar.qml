@@ -17,6 +17,8 @@ ColumnLayout {
     property real maximumValue: 100
     property real currentValue: 50
 
+    property string textValueSubfix: ""
+
     property color valueColor: "red"
     property color noValueColor: "white"
     property color textValueColor: "white"
@@ -26,17 +28,17 @@ ColumnLayout {
     property real titleScale: 1.8
 
     // Eventos
-    onProgressBarSizeChanged: canvas.requestPaint()
-    onTitleTextChanged: canvas.requestPaint()
+    onProgressBarSizeChanged: canvas.requestPaint();
+    onTitleTextChanged: canvas.requestPaint();
 
-    onMinimumValueChanged: canvas.requestPaint()
-    onMaximumValueChanged: canvas.requestPaint()
-    onCurrentValueChanged: canvas.requestPaint()
+    onMinimumValueChanged: canvas.requestPaint();
+    onMaximumValueChanged: canvas.requestPaint();
+    onCurrentValueChanged: canvas.requestPaint();
 
-    onValueColorChanged: canvas.requestPaint()
-    onTextValueColorChanged: canvas.requestPaint()
-    onNoValueColorChanged: canvas.requestPaint()
-    onTitleColorChanged: canvas.requestPaint()
+    onValueColorChanged: canvas.requestPaint();
+    onTextValueColorChanged: canvas.requestPaint();
+    onNoValueColorChanged: canvas.requestPaint();
+    onTitleColorChanged: canvas.requestPaint();
 
     Label {
         id: labelTitle
@@ -118,7 +120,7 @@ ColumnLayout {
 
             anchors.centerIn: canvas
 
-            text: layout.currentValue
+            text: layout.currentValue + " " + layout.textValueSubfix
 
             font.pixelSize: canvas.size * layout.valueScale / 10
             color: layout.textValueColor

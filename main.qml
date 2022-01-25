@@ -1,3 +1,6 @@
+import "pages"
+import "dialogs"
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
@@ -10,10 +13,6 @@ import QtQuick.VirtualKeyboard.Settings
 
 import GUISCPA
 
-import "."
-import "items"
-import "pages"
-
 ApplicationWindow {
     id: applicationWindow
 
@@ -25,12 +24,12 @@ ApplicationWindow {
     property string password: ""
 
     // Resolucion de pantalla
-    width: 800
-    height: 600
+    minimumWidth: 800
+    minimumHeight: 600
 
     // Modo de pantalla
     visible: true
-    visibility: Window.Maximized
+    //visibility: Window.FullScreen
 
     title: "Control de usuario"
 
@@ -196,6 +195,20 @@ ApplicationWindow {
         HMISCPATop {
             buttonDisconnect.onClicked: {
                 guiSCPAManager.disconnectToServer();
+            }
+
+            buttonSopladores.onClicked: {
+                stackView.push(hmiSCPASopladores);
+            }
+        }
+    }
+
+    Component {
+        id: hmiSCPASopladores
+
+        HMISCPASopladores {
+            buttonVolver.onClicked: {
+                stackView.pop()
             }
         }
     }
