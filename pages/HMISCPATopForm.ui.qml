@@ -8,12 +8,12 @@ Item {
     property alias buttonDisconnect: buttonDisconnect
     property alias buttonSopladores: buttonSopladores
     property alias buttonParadaEmergencia: buttonParadaEmergencia
-    property alias hMISCPAVariableIndicatorLvFoso: hMISCPAVariableIndicatorLvFoso
     property alias hMISCPAVariableIndicatorPHAnox: hMISCPAVariableIndicatorPHAnox
     property alias hMISCPAVariableIndicatorLvLodo: hMISCPAVariableIndicatorLvLodo
     property alias hMISCPAVariableIndicatorTemp: hMISCPAVariableIndicatorTemp
     property alias hMISCPAVariableIndicatorPHAireacion: hMISCPAVariableIndicatorPHAireacion
     property alias hMISCPAVariableIndicatorOD: hMISCPAVariableIndicatorOD
+    property alias buttonSimulacion: buttonSimulacion
 
     Pane {
         id: pane
@@ -67,7 +67,6 @@ Item {
                                 imageSize: 20
                                 image.source: "../icons/HMISCPALv.svg"
                                 textValueSubfix: "%"
-                                currentValue: 10.25
                                 titleText: "Lv foso"
                             }
 
@@ -76,7 +75,6 @@ Item {
                                 imageSize: 20
                                 image.source: "../icons/HMISCPALv.svg"
                                 textValueSubfix: ""
-                                currentValue: 7.25
                                 titleText: "PH"
                             }
                         }
@@ -117,7 +115,6 @@ Item {
                             HMISCPAVariableIndicator {
                                 id: hMISCPAVariableIndicatorTemp
                                 imageSize: 15
-                                currentValue: 24.25
                                 textValueSubfix: "°C"
                                 image.source: "../icons/HMISCPATemp.svg"
                                 titleText: "T"
@@ -128,7 +125,6 @@ Item {
                                 imageSize: 20
                                 image.source: "../icons/HMISCPALv.svg"
                                 textValueSubfix: "%"
-                                currentValue: 10.05
                                 titleText: "Lv lodo"
                             }
 
@@ -137,7 +133,6 @@ Item {
                                 imageSize: 20
                                 image.source: "../icons/HMISCPALv.svg"
                                 textValueSubfix: ""
-                                currentValue: 6.15
                                 titleText: "PH"
                             }
 
@@ -145,7 +140,6 @@ Item {
                                 id: hMISCPAVariableIndicatorOD
                                 image.source: "../icons/HMISCPAOD.svg"
                                 textValueSubfix: "mg/L"
-                                currentValue: 3.45
                                 titleText: "OD"
                             }
                         }
@@ -159,7 +153,7 @@ Item {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 sourceSize.width: image.width
-                sourceSize.height: image.width
+                sourceSize.height: image.height
                 antialiasing: true
                 fillMode: Image.PreserveAspectFit
             }
@@ -175,6 +169,17 @@ Item {
 
                 Item {
                     id: item1
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                }
+
+                Button {
+                    id: buttonSimulacion
+                    text: qsTr("Simulacion")
+                }
+
+                Item {
+                    id: item3
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                 }
@@ -204,7 +209,7 @@ Item {
 Designer {
     D{i:0;autoSize:true;formeditorZoom:0.9;height:600;width:800}D{i:6}D{i:8}D{i:9}D{i:7}
 D{i:5}D{i:4}D{i:12}D{i:14}D{i:15}D{i:16}D{i:17}D{i:13}D{i:11}D{i:10}D{i:3}D{i:18}
-D{i:20}D{i:21}D{i:22}D{i:23}D{i:24}D{i:19}D{i:2}D{i:1}
+D{i:20}D{i:21}D{i:22}D{i:23}D{i:24}D{i:25}D{i:26}D{i:19}D{i:2}D{i:1}
 }
 ##^##*/
 

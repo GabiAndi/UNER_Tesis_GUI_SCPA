@@ -200,6 +200,10 @@ ApplicationWindow {
             buttonSopladores.onClicked: {
                 stackView.push(hmiSCPASopladores);
             }
+
+            buttonSimulacion.onClicked: {
+                stackView.push(hmiSCPASimulacion);
+            }
         }
     }
 
@@ -207,6 +211,16 @@ ApplicationWindow {
         id: hmiSCPASopladores
 
         HMISCPASopladores {
+            buttonVolver.onClicked: {
+                stackView.pop()
+            }
+        }
+    }
+
+    Component {
+        id: hmiSCPASimulacion
+
+        HMISCPASimulacion {
             buttonVolver.onClicked: {
                 stackView.pop()
             }

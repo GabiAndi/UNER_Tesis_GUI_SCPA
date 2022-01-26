@@ -15,7 +15,7 @@ ColumnLayout {
 
     property real minimumValue: 0
     property real maximumValue: 100
-    property real currentValue: 50
+    property real currentValue: 0
 
     property string textValueSubfix: ""
 
@@ -43,10 +43,7 @@ ColumnLayout {
     Label {
         id: labelTitle
 
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-
-        Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+        Layout.alignment: Qt.AlignHCenter
 
         text: layout.titleText
 
@@ -65,7 +62,7 @@ ColumnLayout {
         width: layout.progressBarSize
         height: layout.progressBarSize
 
-        Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
+        Layout.alignment: Qt.AlignHCenter
 
         // Ubicación
         property real padding: 10

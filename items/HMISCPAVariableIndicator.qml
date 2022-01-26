@@ -15,7 +15,7 @@ ColumnLayout {
     property alias image: image
 
     // Valor
-    property real currentValue: 50
+    property real currentValue: 0
 
     property string textValueSubfix: ""
 
@@ -27,9 +27,7 @@ ColumnLayout {
     Label {
         id: labelTitle
 
-        Layout.fillWidth: true
-
-        Layout.alignment: Qt.AlignHCenter
+        Layout.alignment: Qt.AlignCenter
 
         text: itemTop.titleText
 
@@ -43,13 +41,13 @@ ColumnLayout {
     Image {
         id: image
 
-        width: imageSize
-        height: imageSize
+        width: itemTop.imageSize
+        height: itemTop.imageSize
 
         Layout.alignment: Qt.AlignCenter
 
-        sourceSize.width: imageSize
-        sourceSize.height: imageSize
+        sourceSize.width: itemTop.imageSize
+        sourceSize.height: itemTop.imageSize
 
         fillMode: Image.PreserveAspectFit
     }
@@ -57,7 +55,7 @@ ColumnLayout {
     Label {
         id: labelCurrentValue
 
-        Layout.fillWidth: true
+        Layout.alignment: Qt.AlignCenter
 
         text: itemTop.currentValue + " " + itemTop.textValueSubfix
 

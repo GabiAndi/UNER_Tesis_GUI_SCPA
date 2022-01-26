@@ -8,45 +8,99 @@ Item {
     property alias buttonVolver: buttonVolver
     property alias buttonParadaEmergencia: buttonParadaEmergencia
     property alias buttonConfiguracion: buttonConfiguracion
+    property alias hMISCPAMotorStatusM01: hMISCPAMotorStatusM01
+    property alias hMISCPAMotorStatusM02: hMISCPAMotorStatusM02
+    property alias columnLayout1: columnLayout1
+
     Pane {
         id: pane
         anchors.fill: parent
 
-        Button {
-            id: buttonVolver
-            text: qsTr("Volver")
-            anchors.left: parent.left
-            anchors.bottom: parent.bottom
-        }
-
-        Image {
-            id: image
+        ColumnLayout {
+            id: columnLayout
             anchors.fill: parent
-            source: "../process/HMISCPASopladores.svg"
-            sourceSize.height: width
-            sourceSize.width: height
-            fillMode: Image.PreserveAspectFit
-        }
 
-        Button {
-            id: buttonParadaEmergencia
-            text: qsTr("Parada de emergencia")
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            highlighted: true
-        }
+            Label {
+                id: label
+                text: qsTr("Estado de sopladores")
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                Layout.fillWidth: true
+                font.pointSize: 24
+            }
 
-        Button {
-            id: buttonConfiguracion
-            text: qsTr("Configuración")
-            anchors.right: parent.right
-            anchors.top: parent.top
+            RowLayout {
+                id: rowLayout1
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                Image {
+                    id: image
+                    source: "../process/HMISCPASopladores.svg"
+                    Layout.fillHeight: true
+                    sourceSize.width: image.width
+                    sourceSize.height: image.height
+                    antialiasing: true
+                    fillMode: Image.PreserveAspectFit
+                }
+
+                ColumnLayout {
+                    id: columnLayout1
+                    Layout.fillHeight: true
+                    spacing: 20
+
+                    HMISCPAMotorStatus {
+                        id: hMISCPAMotorStatusM01
+                        titleText: "P70-M01"
+                    }
+
+                    HMISCPAMotorStatus {
+                        id: hMISCPAMotorStatusM02
+                        titleText: "P70-M02"
+                    }
+                }
+            }
+
+            RowLayout {
+                id: rowLayout
+                Layout.fillWidth: true
+
+                Button {
+                    id: buttonVolver
+                    text: qsTr("Volver")
+                }
+
+                Item {
+                    id: item3
+                    Layout.fillWidth: true
+                }
+
+                Button {
+                    id: buttonConfiguracion
+                    text: qsTr("Configuración")
+                }
+
+                Item {
+                    id: item2
+                    Layout.fillWidth: true
+                }
+
+                Button {
+                    id: buttonParadaEmergencia
+                    text: qsTr("Parada de emergencia")
+                    highlighted: true
+                }
+            }
         }
     }
 }
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;height:600;width:800}D{i:2}D{i:3}D{i:4}D{i:5}D{i:1}
+    D{i:0;autoSize:true;height:600;width:800}D{i:3}D{i:5}D{i:7}D{i:8}D{i:6}D{i:4}D{i:10}
+D{i:11}D{i:12}D{i:13}D{i:14}D{i:9}D{i:2}D{i:1}
 }
 ##^##*/
+
