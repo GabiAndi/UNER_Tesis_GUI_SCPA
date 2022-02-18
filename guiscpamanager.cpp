@@ -34,6 +34,9 @@ GUISCPAManager::GUISCPAManager(QObject *parent)
     connect(hmiClientManager, &HMIClientManager::loginTimeOut, this, &GUISCPAManager::loginTimeOut);
     connect(hmiClientManager, &HMIClientManager::otherUserLogin, this, &GUISCPAManager::otherUserLogin);
 
+    // Comandos
+    connect(this, &GUISCPAManager::sendSetParam, hmiClientManager, &HMIClientManager::sendSetParam);
+
     hmiClientThread->start();
 }
 
@@ -64,4 +67,9 @@ void GUISCPAManager::loginToServer(const QString user, const QString password)
 void GUISCPAManager::forceLoginToServer(bool confirm)
 {
     emit sendForceLogin(confirm);
+}
+
+void GUISCPAManager::setParam(SimulationSensor sensor, float value)
+{
+    emit sendSetParam(sensor, value);
 }

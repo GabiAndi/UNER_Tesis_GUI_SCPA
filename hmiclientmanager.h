@@ -57,6 +57,8 @@ class HMIClientManager : public QObject
 
         void sendAlive();
 
+        void sendSetParam(hmiprotocoldata::SimulationSensor sensor, float value);
+
     private:
         // Conexion
         QTcpSocket *serverSocket = nullptr;

@@ -84,6 +84,23 @@ void HMIClientManager::sendAlive()
     hmiProtocol->write(Command::KEEP_ALIVE, QByteArray().append(KeepAliveMode::REPLY));
 }
 
+void HMIClientManager::sendSetParam(SimulationSensor sensor, float value)
+{
+    DataConverter converter;
+
+    converter.f[0] = value;
+
+    QByteArray data;
+
+    data.append(sensor);
+    data.append(converter.u8[0]);
+    data.append(converter.u8[1]);
+    data.append(converter.u8[2]);
+    data.append(converter.u8[3]);
+
+    hmiProtocol->write(Command::SET_PARAM, data);
+}
+
 void HMIClientManager::clientConnection()
 {
     // Informamos que se establecio una conexion
@@ -176,6 +193,14 @@ void HMIClientManager::newPackage(const uint8_t cmd, const QByteArray payload)
                     emit otherUserLogin();
                     break;
             }
+
+            break;
+        }
+
+        // Respuesta de seteo de parametros de simulacion
+        case Command::REQUEST_SET_PARAM:
+        {
+
 
             break;
         }

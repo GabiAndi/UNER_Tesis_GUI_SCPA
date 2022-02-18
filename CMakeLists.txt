@@ -18,10 +18,8 @@ add_subdirectory("../HMIProtocol" "../build-HMIProtocol")
 
 qt_add_executable(${PROJECT_NAME}
     "main.cpp"
-    "guiscpamanager.h"
-    "guiscpamanager.cpp"
-    "hmiclientmanager.h"
-    "hmiclientmanager.cpp"
+    "guiscpamanager.h" "guiscpamanager.cpp"
+    "hmiclientmanager.h" "hmiclientmanager.cpp"
 )
 
 qt_add_resources(${PROJECT_NAME} "resources"
@@ -67,4 +65,12 @@ target_link_libraries(${PROJECT_NAME}
         Qt6::Network
         Qt6::Svg
         HMIProtocol
+)
+
+set(INSTALL_DESTDIR "/home/pi/${PROJECT_NAME}")
+
+install(TARGETS ${PROJECT_NAME}
+    RUNTIME DESTINATION "${INSTALL_DESTDIR}"
+    BUNDLE DESTINATION "${INSTALL_DESTDIR}"
+    LIBRARY DESTINATION "${INSTALL_DESTDIR}"
 )
