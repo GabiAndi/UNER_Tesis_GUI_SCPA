@@ -117,7 +117,7 @@ ColumnLayout {
 
             anchors.centerIn: canvas
 
-            text: layout.currentValue + " " + layout.textValueSubfix
+            text: layout.currentValue.toPrecision(4) + " " + layout.textValueSubfix
 
             font.pixelSize: canvas.size * layout.valueScale / 10
             color: layout.textValueColor

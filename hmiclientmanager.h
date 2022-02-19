@@ -12,6 +12,7 @@
 
 #include <QObject>
 
+#include <QTimer>
 #include <QTcpSocket>
 
 #include "hmiprotocol.h"
@@ -44,6 +45,21 @@ class HMIClientManager : public QObject
         void loginTimeOut();    // Tiempo de conexion excedido
         void otherUserLogin();  // Otro usuario inicio sesión
 
+        // Parametros recividos de los sensores
+        // Pileta
+        void setLvFoso(float lv);
+        void setLvLodo(float lv);
+        void setTemp(float temp);
+        void setOD(float od);
+        void setPhAnox(float ph);
+        void setPhAireacion(float ph);
+
+        // Motores
+        void setMotorCurrent(float current);
+        void setMotorVoltaje(float voltaje);
+        void setMotorTemp(float temp);
+        void setMotorVelocity(float vel);
+
     public slots:
         void init();
 
@@ -57,7 +73,10 @@ class HMIClientManager : public QObject
 
         void sendAlive();
 
-        void sendSetParam(hmiprotocoldata::SimulationSensor sensor, float value);
+        // Peticion del estado del sistema
+        void sendGetSistemState();
+
+        void sendSetParam(hmiprotocoldata::Sensor sensor, float value);
 
     private:
         // Conexion
@@ -74,6 +93,9 @@ class HMIClientManager : public QObject
         }hmi_client_state_t;
 
         hmi_client_state_t *hmiClientState = nullptr;
+
+        // Timer que solicita el estado del sistema cada x cantidad de tiempo
+        QTimer *timerData = nullptr;
 
     private slots:
         // Eventos

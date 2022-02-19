@@ -14,6 +14,9 @@ HMIClientManager::~HMIClientManager()
     delete serverSocket;
 
     delete hmiClientState;
+
+    // Timer de captura
+    delete timerData;
 }
 
 void HMIClientManager::init()
@@ -47,6 +50,11 @@ void HMIClientManager::init()
     });
 
     connect(hmiProtocol, &HMIProtocol::readyRead, this, &HMIClientManager::newPackage);
+
+    // Timer de estado
+    timerData = new QTimer(this);
+
+    connect(timerData, &QTimer::timeout, this, &HMIClientManager::sendGetSistemState);
 }
 
 void HMIClientManager::hmiConnect(const QString serverIP, const QString serverPort)
@@ -84,7 +92,23 @@ void HMIClientManager::sendAlive()
     hmiProtocol->write(Command::KEEP_ALIVE, QByteArray().append(KeepAliveMode::REPLY));
 }
 
-void HMIClientManager::sendSetParam(SimulationSensor sensor, float value)
+void HMIClientManager::sendGetSistemState()
+{
+    // Enviamos la peticion de estado de cada sensor
+    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_LV_FOSO));
+    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_LV_LODO));
+    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_TEMP));
+    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_OD));
+    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_PH_ANOX));
+    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_PH_AIREACION));
+
+    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_MOTOR_CURRENT));
+    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_MOTOR_VOLTAJE));
+    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_MOTOR_TEMP));
+    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_MOTOR_VELOCITY));
+}
+
+void HMIClientManager::sendSetParam(Sensor sensor, float value)
 {
     DataConverter converter;
 
@@ -108,6 +132,8 @@ void HMIClientManager::clientConnection()
 
     hmiClientState->disconnectionCode = false;
     hmiClientState->connected = true;
+
+    timerData->start(1000);
 }
 
 void HMIClientManager::clientErrorOcurred(QAbstractSocket::SocketError error)
@@ -120,6 +146,8 @@ void HMIClientManager::clientErrorOcurred(QAbstractSocket::SocketError error)
         emit clientErrorDisconnected();
 
     hmiClientState->connected = false;
+
+    timerData->stop();
 }
 
 void HMIClientManager::clientDisconnection()
@@ -129,6 +157,8 @@ void HMIClientManager::clientDisconnection()
         emit clientDisconnected();
 
     hmiClientState->connected = false;
+
+    timerData->stop();
 }
 
 void HMIClientManager::newPackage(const uint8_t cmd, const QByteArray payload)
@@ -191,6 +221,72 @@ void HMIClientManager::newPackage(const uint8_t cmd, const QByteArray payload)
 
                 case DisconnectCode::OTHER_USER_LOGIN:
                     emit otherUserLogin();
+                    break;
+            }
+
+            break;
+        }
+
+        // Respuesta de la obtencion de parametros
+        case Command::REQUEST_GET_PARAM:
+        {
+            DataConverter converter;
+
+            converter.u8[0] = payload.at(1);
+            converter.u8[1] = payload.at(2);
+            converter.u8[2] = payload.at(3);
+            converter.u8[3] = payload.at(4);
+
+            switch ((Sensor)(payload.at(0)))
+            {
+                case Sensor::SENSOR_LV_FOSO:
+                    emit setLvFoso(converter.f[0]);
+
+                    break;
+
+                case Sensor::SENSOR_LV_LODO:
+                    emit setLvLodo(converter.f[0]);
+
+                    break;
+
+                case Sensor::SENSOR_TEMP:
+                    emit setTemp(converter.f[0]);
+
+                    break;
+
+                case Sensor::SENSOR_OD:
+                    emit setOD(converter.f[0]);
+
+                    break;
+
+                case Sensor::SENSOR_PH_ANOX:
+                    emit setPhAnox(converter.f[0]);
+
+                    break;
+
+                case Sensor::SENSOR_PH_AIREACION:
+                    emit setPhAireacion(converter.f[0]);
+
+                    break;
+
+                case Sensor::SENSOR_MOTOR_CURRENT:
+                    emit setMotorCurrent(converter.f[0]);
+
+                    break;
+
+                case Sensor::SENSOR_MOTOR_VOLTAJE:
+                    emit setMotorVoltaje(converter.f[0]);
+
+                    break;
+
+                case Sensor::SENSOR_MOTOR_TEMP:
+                    emit setMotorTemp(converter.f[0]);
+
+                    break;
+
+                case Sensor::SENSOR_MOTOR_VELOCITY:
+                    emit setMotorVelocity(converter.f[0]);
+
                     break;
             }
 

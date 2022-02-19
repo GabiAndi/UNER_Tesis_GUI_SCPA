@@ -14,6 +14,7 @@ Item {
     property alias hMISCPAVariableIndicatorPHAireacion: hMISCPAVariableIndicatorPHAireacion
     property alias hMISCPAVariableIndicatorOD: hMISCPAVariableIndicatorOD
     property alias buttonSimulacion: buttonSimulacion
+    property alias hMISCPAVariableIndicatorLvFoso: hMISCPAVariableIndicatorLvFoso
 
     Pane {
         id: pane

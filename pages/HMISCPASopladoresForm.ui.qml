@@ -7,10 +7,7 @@ import QtQuick.Layouts 6.0
 Item {
     property alias buttonVolver: buttonVolver
     property alias buttonParadaEmergencia: buttonParadaEmergencia
-    property alias buttonConfiguracion: buttonConfiguracion
     property alias hMISCPAMotorStatusM01: hMISCPAMotorStatusM01
-    property alias hMISCPAMotorStatusM02: hMISCPAMotorStatusM02
-    property alias columnLayout1: columnLayout1
 
     Pane {
         id: pane
@@ -55,11 +52,6 @@ Item {
                         id: hMISCPAMotorStatusM01
                         titleText: "P70-M01"
                     }
-
-                    HMISCPAMotorStatus {
-                        id: hMISCPAMotorStatusM02
-                        titleText: "P70-M02"
-                    }
                 }
             }
 
@@ -70,16 +62,6 @@ Item {
                 Button {
                     id: buttonVolver
                     text: qsTr("Volver")
-                }
-
-                Item {
-                    id: item3
-                    Layout.fillWidth: true
-                }
-
-                Button {
-                    id: buttonConfiguracion
-                    text: qsTr("Configuración")
                 }
 
                 Item {
@@ -99,8 +81,8 @@ Item {
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;height:600;width:800}D{i:3}D{i:5}D{i:7}D{i:8}D{i:6}D{i:4}D{i:10}
-D{i:11}D{i:12}D{i:13}D{i:14}D{i:9}D{i:2}D{i:1}
+    D{i:0;autoSize:true;height:600;width:800}D{i:3}D{i:5}D{i:7}D{i:6}D{i:4}D{i:9}D{i:10}
+D{i:11}D{i:8}D{i:2}D{i:1}
 }
 ##^##*/
 

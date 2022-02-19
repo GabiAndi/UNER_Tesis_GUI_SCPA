@@ -189,6 +189,7 @@ ApplicationWindow {
         id: hmiSCPATop
 
         HMISCPATop {
+
             buttonDisconnect.onClicked: {
                 guiSCPAManager.disconnectToServer();
             }
@@ -200,6 +201,13 @@ ApplicationWindow {
             buttonSimulacion.onClicked: {
                 stackView.push(hmiSCPASimulacion);
             }
+
+            hMISCPAVariableIndicatorLvFoso.currentValue: guiSCPAManager.lvFoso
+            hMISCPAVariableIndicatorLvLodo.currentValue: guiSCPAManager.lvLodo
+            hMISCPAVariableIndicatorTemp.currentValue: guiSCPAManager.temp
+            hMISCPAVariableIndicatorOD.currentValue: guiSCPAManager.od
+            hMISCPAVariableIndicatorPHAnox.currentValue: guiSCPAManager.phAnox
+            hMISCPAVariableIndicatorPHAireacion.currentValue: guiSCPAManager.phAireacion
         }
     }
 
@@ -210,6 +218,10 @@ ApplicationWindow {
             buttonVolver.onClicked: {
                 stackView.pop()
             }
+
+            hMISCPAMotorStatusM01.hMICircularProgressBarCorriente.currentValue: guiSCPAManager.motorCurrent
+            hMISCPAMotorStatusM01.hMICircularProgressBarVoltaje.currentValue: guiSCPAManager.motorVoltaje
+            hMISCPAMotorStatusM01.hMICircularProgressBarVelocidad.currentValue: guiSCPAManager.motorVelocity
         }
     }
 
@@ -217,8 +229,37 @@ ApplicationWindow {
         id: hmiSCPASimulacion
 
         HMISCPASimulacion {
+            Component.onCompleted: {
+                sliderLvFoso.value = guiSCPAManager.lvFoso;
+                sliderLvLodo.value = guiSCPAManager.lvLodo;
+                sliderTemp.value = guiSCPAManager.temp;
+                sliderOD.value = guiSCPAManager.od;
+                sliderPHAnox.value = guiSCPAManager.phAnox;
+                sliderPHAireacion.value = guiSCPAManager.phAireacion;
+            }
+
             buttonSetLvFoso.onClicked: {
                 guiSCPAManager.setParam(0x00, sliderLvFoso.value);
+            }
+
+            buttonSetLvLodo.onClicked: {
+                guiSCPAManager.setParam(0x01, sliderLvLodo.value);
+            }
+
+            buttonSetTemp.onClicked: {
+                guiSCPAManager.setParam(0x02, sliderTemp.value);
+            }
+
+            buttonSetOD.onClicked: {
+                guiSCPAManager.setParam(0x03, sliderOD.value);
+            }
+
+            buttonSetPHAnox.onClicked: {
+                guiSCPAManager.setParam(0x04, sliderPHAnox.value);
+            }
+
+            buttonSetPHAireacion.onClicked: {
+                guiSCPAManager.setParam(0x05, sliderPHAireacion.value);
             }
 
             buttonVolver.onClicked: {

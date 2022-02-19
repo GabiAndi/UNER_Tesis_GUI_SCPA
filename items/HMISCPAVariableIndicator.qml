@@ -57,7 +57,7 @@ ColumnLayout {
 
         Layout.alignment: Qt.AlignCenter
 
-        text: itemTop.currentValue + " " + itemTop.textValueSubfix
+        text: itemTop.currentValue.toPrecision(4) + " " + itemTop.textValueSubfix
 
         color: itemTop.textValueColor
 
