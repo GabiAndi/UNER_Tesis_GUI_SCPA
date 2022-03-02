@@ -125,6 +125,16 @@ void HMIClientManager::sendSetParam(Sensor sensor, float value)
     hmiProtocol->write(Command::SET_PARAM, data);
 }
 
+void HMIClientManager::sendInitSystem()
+{
+    hmiProtocol->write(Command::INIT_SYSTEM, QByteArray().append(Request::REQUEST_OK));
+}
+
+void HMIClientManager::sendStopSystem()
+{
+    hmiProtocol->write(Command::STOP_SYSTEM, QByteArray().append(Request::REQUEST_OK));
+}
+
 void HMIClientManager::clientConnection()
 {
     // Informamos que se establecio una conexion

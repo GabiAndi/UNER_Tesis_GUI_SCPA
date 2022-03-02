@@ -67,7 +67,7 @@ target_link_libraries(${PROJECT_NAME}
         HMIProtocol
 )
 
-set(INSTALL_DESTDIR "/home/pi/${PROJECT_NAME}")
+set(INSTALL_DESTDIR "/tmp/${PROJECT_NAME}")
 
 install(TARGETS ${PROJECT_NAME}
     RUNTIME DESTINATION "${INSTALL_DESTDIR}"

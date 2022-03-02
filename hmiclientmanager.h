@@ -78,6 +78,10 @@ class HMIClientManager : public QObject
 
         void sendSetParam(hmiprotocoldata::Sensor sensor, float value);
 
+        // Estado del sistema de control
+        void sendInitSystem();
+        void sendStopSystem();
+
     private:
         // Conexion
         QTcpSocket *serverSocket = nullptr;

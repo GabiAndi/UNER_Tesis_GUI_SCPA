@@ -89,6 +89,10 @@ class GUISCPAManager : public QObject
         float getMotorVelocity();
         void setMotorVelocity(float newMotorVelocity);
 
+        // Estado del control
+        Q_INVOKABLE void initSystem();
+        Q_INVOKABLE void stopSystem();
+
     signals:
         // Señales al hilo del administrador de cliente
         void hmiConnect(const QString serverIP, const QString serverPort);
@@ -130,6 +134,10 @@ class GUISCPAManager : public QObject
         void motorVoltajeChanged();
         void motorTempChanged();
         void motorVelocityChanged();
+
+        // Estado del sistema
+        void sendInitSystem();
+        void sendStopSystem();
 
     private:
         // Hilo de administración de cliente

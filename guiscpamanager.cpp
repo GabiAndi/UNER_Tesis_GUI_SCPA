@@ -50,6 +50,10 @@ GUISCPAManager::GUISCPAManager(QObject *parent)
     connect(hmiClientManager, &HMIClientManager::setMotorTemp, this, &GUISCPAManager::setMotorTemp);
     connect(hmiClientManager, &HMIClientManager::setMotorVelocity, this, &GUISCPAManager::setMotorVelocity);
 
+    // Estado del sistema
+    connect(this, &GUISCPAManager::sendInitSystem, hmiClientManager, &HMIClientManager::sendInitSystem);
+    connect(this, &GUISCPAManager::sendStopSystem, hmiClientManager, &HMIClientManager::sendStopSystem);
+
     hmiClientThread->start();
 }
 
@@ -205,4 +209,14 @@ void GUISCPAManager::setMotorVelocity(float newMotorVelocity)
     motorVelocity = newMotorVelocity;
 
     emit motorVelocityChanged();
+}
+
+void GUISCPAManager::initSystem()
+{
+    emit sendInitSystem();
+}
+
+void GUISCPAManager::stopSystem()
+{
+    emit sendStopSystem();
 }

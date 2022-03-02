@@ -219,6 +219,10 @@ ApplicationWindow {
                 stackView.pop()
             }
 
+            switchStateSystem.onCheckedChanged: {
+                switchStateSystem.checked ? guiSCPAManager.initSystem() : guiSCPAManager.stopSystem();
+            }
+
             hMISCPAMotorStatusM01.hMICircularProgressBarCorriente.currentValue: guiSCPAManager.motorCurrent
             hMISCPAMotorStatusM01.hMICircularProgressBarVoltaje.currentValue: guiSCPAManager.motorVoltaje
             hMISCPAMotorStatusM01.hMICircularProgressBarVelocidad.currentValue: guiSCPAManager.motorVelocity
