@@ -240,6 +240,8 @@ ApplicationWindow {
                 sliderOD.value = guiSCPAManager.od;
                 sliderPHAnox.value = guiSCPAManager.phAnox;
                 sliderPHAireacion.value = guiSCPAManager.phAireacion;
+
+                sliderSetPointOD.value = guiSCPAManager.setPointOD;
             }
 
             buttonSetLvFoso.onClicked: {
@@ -264,6 +266,10 @@ ApplicationWindow {
 
             buttonSetPHAireacion.onClicked: {
                 guiSCPAManager.setParam(0x05, sliderPHAireacion.value);
+            }
+
+            buttonSetSetPointOD.onClicked: {
+                guiSCPAManager._setSetPointOD(sliderSetPointOD.value);
             }
 
             buttonVolver.onClicked: {

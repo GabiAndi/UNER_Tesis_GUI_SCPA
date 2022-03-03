@@ -19,6 +19,8 @@ Item {
     property alias sliderOD: sliderOD
     property alias buttonSetOD: buttonSetOD
     property alias sliderTemp: sliderTemp
+    property alias buttonSetSetPointOD: buttonSetSetPointOD
+    property alias sliderSetPointOD: sliderSetPointOD
 
     Pane {
         id: pane
@@ -224,6 +226,34 @@ Item {
 
                     Button {
                         id: buttonSetOD
+                        text: qsTr("Establecer")
+                    }
+                }
+
+                RowLayout {
+                    id: rowLayoutSetPointOD
+                    Label {
+                        id: label15
+                        text: qsTr("Set point OD:")
+                    }
+
+                    Slider {
+                        id: sliderSetPointOD
+                        value: 3.6
+                        stepSize: 0.01
+                        Layout.fillWidth: true
+                        to: 6
+                    }
+
+                    Label {
+                        id: label16
+                        text: qsTr(sliderSetPointOD.value.toPrecision(3) + "mg/L")
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+
+                    Button {
+                        id: buttonSetSetPointOD
                         text: qsTr("Establecer")
                     }
                 }

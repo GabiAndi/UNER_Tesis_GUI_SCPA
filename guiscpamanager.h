@@ -89,6 +89,13 @@ class GUISCPAManager : public QObject
         float getMotorVelocity();
         void setMotorVelocity(float newMotorVelocity);
 
+        Q_PROPERTY(float setPointOD READ getSetPointOD WRITE setSetPointOD NOTIFY setPointODChanged);
+
+        float getSetPointOD();
+        void setSetPointOD(float newSetPointOD);
+
+        Q_INVOKABLE void _setSetPointOD(float value);
+
         // Estado del control
         Q_INVOKABLE void initSystem();
         Q_INVOKABLE void stopSystem();
@@ -135,9 +142,15 @@ class GUISCPAManager : public QObject
         void motorTempChanged();
         void motorVelocityChanged();
 
+        // Setpoint
+        void setPointODChanged();
+
         // Estado del sistema
         void sendInitSystem();
         void sendStopSystem();
+
+        // Estado del sistema
+        void sendSetPointOD(float value);
 
     private:
         // Hilo de administración de cliente
@@ -156,6 +169,8 @@ class GUISCPAManager : public QObject
         float motorVoltaje = 0;
         float motorTemp = 0;
         float motorVelocity = 0;
+
+        float setPointOD = 0;
 };
 
 #endif // GUISCPAMANAGER_H

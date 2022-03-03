@@ -106,6 +106,8 @@ void HMIClientManager::sendGetSistemState()
     hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_MOTOR_VOLTAJE));
     hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_MOTOR_TEMP));
     hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_MOTOR_VELOCITY));
+
+    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SET_POINT_OD));
 }
 
 void HMIClientManager::sendSetParam(Sensor sensor, float value)
@@ -123,6 +125,22 @@ void HMIClientManager::sendSetParam(Sensor sensor, float value)
     data.append(converter.u8[3]);
 
     hmiProtocol->write(Command::SET_PARAM, data);
+}
+
+void HMIClientManager::sendSetPointOD(float setPointOD)
+{
+    DataConverter converter;
+
+    converter.f[0] = setPointOD;
+
+    QByteArray data;
+
+    data.append(converter.u8[0]);
+    data.append(converter.u8[1]);
+    data.append(converter.u8[2]);
+    data.append(converter.u8[3]);
+
+    hmiProtocol->write(Command::SET_SETPOINT_OD, data);
 }
 
 void HMIClientManager::sendInitSystem()
@@ -296,6 +314,11 @@ void HMIClientManager::newPackage(const uint8_t cmd, const QByteArray payload)
 
                 case Sensor::SENSOR_MOTOR_VELOCITY:
                     emit setMotorVelocity(converter.f[0]);
+
+                    break;
+
+                case Sensor::SET_POINT_OD:
+                    emit setSetPoint(converter.f[0]);
 
                     break;
             }

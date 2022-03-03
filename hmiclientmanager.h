@@ -60,6 +60,9 @@ class HMIClientManager : public QObject
         void setMotorTemp(float temp);
         void setMotorVelocity(float vel);
 
+        // Set Point
+        void setSetPoint(float setPoint);
+
     public slots:
         void init();
 
@@ -77,6 +80,9 @@ class HMIClientManager : public QObject
         void sendGetSistemState();
 
         void sendSetParam(hmiprotocoldata::Sensor sensor, float value);
+
+        // Set point
+        void sendSetPointOD(float setPointOD);
 
         // Estado del sistema de control
         void sendInitSystem();
