@@ -39,6 +39,7 @@ Item {
                     id: textFieldUserName
                     text: "gabi"
                     horizontalAlignment: Text.AlignHCenter
+                    Layout.minimumWidth: 150
                     placeholderText: qsTr("user")
                 }
             }
@@ -55,6 +56,7 @@ Item {
                     text: "0123456789"
                     echoMode: TextInput.Password
                     horizontalAlignment: Text.AlignHCenter
+                    Layout.minimumWidth: 150
                     placeholderText: qsTr("")
                 }
             }

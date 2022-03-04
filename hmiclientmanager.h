@@ -45,23 +45,11 @@ class HMIClientManager : public QObject
         void loginTimeOut();    // Tiempo de conexion excedido
         void otherUserLogin();  // Otro usuario inicio sesión
 
-        // Parametros recividos de los sensores
-        // Pileta
-        void setLvFoso(float lv);
-        void setLvLodo(float lv);
-        void setTemp(float temp);
-        void setOD(float od);
-        void setPhAnox(float ph);
-        void setPhAireacion(float ph);
+        // Sensores
+        void getSensorValue(hmiprotocoldata::Sensor sensor, float value);
 
-        // Motores
-        void setMotorCurrent(float current);
-        void setMotorVoltaje(float voltaje);
-        void setMotorTemp(float temp);
-        void setMotorVelocity(float vel);
-
-        // Set Point
-        void setSetPoint(float setPoint);
+        // Estado del sistema
+        void getSystemState(hmiprotocoldata::SystemState state, float value);
 
     public slots:
         void init();
@@ -76,17 +64,14 @@ class HMIClientManager : public QObject
 
         void sendAlive();
 
-        // Peticion del estado del sistema
-        void sendGetSistemState();
+        // Sincronización del estado del systema
+        void sync();
 
-        void sendSetParam(hmiprotocoldata::Sensor sensor, float value);
-
-        // Set point
-        void sendSetPointOD(float setPointOD);
+        // Sensores
+        void sendSetSensorValue(hmiprotocoldata::Sensor sensor, float value);
 
         // Estado del sistema de control
-        void sendInitSystem();
-        void sendStopSystem();
+        void sendSetSystemState(hmiprotocoldata::SystemState state, float value);
 
     private:
         // Conexion

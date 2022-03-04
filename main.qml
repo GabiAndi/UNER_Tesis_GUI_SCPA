@@ -189,6 +189,14 @@ ApplicationWindow {
         id: hmiSCPATop
 
         HMISCPATop {
+            Component.onCompleted: {
+                hMISCPAVariableIndicatorLvFoso.currentValue = guiSCPAManager.sensorLvFoso;
+                hMISCPAVariableIndicatorLvLodo.currentValue = guiSCPAManager.sensorLvLodo;
+                hMISCPAVariableIndicatorTemp.currentValue = guiSCPAManager.sensorTemp;
+                hMISCPAVariableIndicatorOD.currentValue = guiSCPAManager.sensorOD;
+                hMISCPAVariableIndicatorPHAnox.currentValue = guiSCPAManager.sensorPhAnox;
+                hMISCPAVariableIndicatorPHAireacion.currentValue = guiSCPAManager.sensorPhAireacion;
+            }
 
             buttonDisconnect.onClicked: {
                 guiSCPAManager.disconnectToServer();
@@ -202,12 +210,21 @@ ApplicationWindow {
                 stackView.push(hmiSCPASimulacion);
             }
 
-            hMISCPAVariableIndicatorLvFoso.currentValue: guiSCPAManager.lvFoso
-            hMISCPAVariableIndicatorLvLodo.currentValue: guiSCPAManager.lvLodo
-            hMISCPAVariableIndicatorTemp.currentValue: guiSCPAManager.temp
-            hMISCPAVariableIndicatorOD.currentValue: guiSCPAManager.od
-            hMISCPAVariableIndicatorPHAnox.currentValue: guiSCPAManager.phAnox
-            hMISCPAVariableIndicatorPHAireacion.currentValue: guiSCPAManager.phAireacion
+            Timer {
+                id: timer2
+                interval: 300
+                repeat: true
+                running: true
+
+                onTriggered: {
+                    parent.hMISCPAVariableIndicatorLvFoso.currentValue = guiSCPAManager.sensorLvFoso;
+                    parent.hMISCPAVariableIndicatorLvLodo.currentValue = guiSCPAManager.sensorLvLodo;
+                    parent.hMISCPAVariableIndicatorTemp.currentValue = guiSCPAManager.sensorTemp;
+                    parent.hMISCPAVariableIndicatorOD.currentValue = guiSCPAManager.sensorOD;
+                    parent.hMISCPAVariableIndicatorPHAnox.currentValue = guiSCPAManager.sensorPhAnox;
+                    parent.hMISCPAVariableIndicatorPHAireacion.currentValue = guiSCPAManager.sensorPhAireacion;
+                }
+            }
         }
     }
 
@@ -215,17 +232,36 @@ ApplicationWindow {
         id: hmiSCPASopladores
 
         HMISCPASopladores {
+            Component.onCompleted: {
+                switchStateSystem.checked = guiSCPAManager.stateSystemActive;
+
+                hMISCPAMotorStatusM01.motorOn = guiSCPAManager.stateSystemActive;
+                hMISCPAMotorStatusM01.hMICircularProgressBarCorriente.currentValue = guiSCPAManager.sensorMotorCurrent;
+                hMISCPAMotorStatusM01.hMICircularProgressBarVoltaje.currentValue = guiSCPAManager.sensorMotorVoltaje;
+                hMISCPAMotorStatusM01.hMICircularProgressBarVelocidad.currentValue = guiSCPAManager.sensorMotorVelocity;
+            }
+
             buttonVolver.onClicked: {
-                stackView.pop()
+                stackView.pop();
             }
 
             switchStateSystem.onCheckedChanged: {
                 switchStateSystem.checked ? guiSCPAManager.initSystem() : guiSCPAManager.stopSystem();
             }
 
-            hMISCPAMotorStatusM01.hMICircularProgressBarCorriente.currentValue: guiSCPAManager.motorCurrent
-            hMISCPAMotorStatusM01.hMICircularProgressBarVoltaje.currentValue: guiSCPAManager.motorVoltaje
-            hMISCPAMotorStatusM01.hMICircularProgressBarVelocidad.currentValue: guiSCPAManager.motorVelocity
+            Timer {
+                id: timer
+                interval: 300
+                repeat: true
+                running: true
+
+                onTriggered: {
+                    parent.hMISCPAMotorStatusM01.motorOn = guiSCPAManager.stateSystemActive;
+                    parent.hMISCPAMotorStatusM01.hMICircularProgressBarCorriente.currentValue = guiSCPAManager.sensorMotorCurrent;
+                    parent.hMISCPAMotorStatusM01.hMICircularProgressBarVoltaje.currentValue = guiSCPAManager.sensorMotorVoltaje;
+                    parent.hMISCPAMotorStatusM01.hMICircularProgressBarVelocidad.currentValue = guiSCPAManager.sensorMotorVelocity;
+                }
+            }
         }
     }
 
@@ -234,46 +270,46 @@ ApplicationWindow {
 
         HMISCPASimulacion {
             Component.onCompleted: {
-                sliderLvFoso.value = guiSCPAManager.lvFoso;
-                sliderLvLodo.value = guiSCPAManager.lvLodo;
-                sliderTemp.value = guiSCPAManager.temp;
-                sliderOD.value = guiSCPAManager.od;
-                sliderPHAnox.value = guiSCPAManager.phAnox;
-                sliderPHAireacion.value = guiSCPAManager.phAireacion;
+                sliderLvFoso.value = guiSCPAManager.sensorLvFoso;
+                sliderLvLodo.value = guiSCPAManager.sensorLvLodo;
+                sliderTemp.value = guiSCPAManager.sensorTemp;
+                sliderOD.value = guiSCPAManager.sensorOD;
+                sliderPhAnox.value = guiSCPAManager.sensorPhAnox;
+                sliderPhAireacion.value = guiSCPAManager.sensorPhAireacion;
 
-                sliderSetPointOD.value = guiSCPAManager.setPointOD;
+                sliderSetPointOD.value = guiSCPAManager.stateSetpointOD;
             }
 
             buttonSetLvFoso.onClicked: {
-                guiSCPAManager.setParam(0x00, sliderLvFoso.value);
+                guiSCPAManager.setLvFoso(sliderLvFoso.value);
             }
 
             buttonSetLvLodo.onClicked: {
-                guiSCPAManager.setParam(0x01, sliderLvLodo.value);
+                guiSCPAManager.setLvLodo(sliderLvLodo.value);
             }
 
             buttonSetTemp.onClicked: {
-                guiSCPAManager.setParam(0x02, sliderTemp.value);
+                guiSCPAManager.setTemp(sliderTemp.value);
             }
 
             buttonSetOD.onClicked: {
-                guiSCPAManager.setParam(0x03, sliderOD.value);
+                guiSCPAManager.setOD(sliderOD.value);
             }
 
             buttonSetPHAnox.onClicked: {
-                guiSCPAManager.setParam(0x04, sliderPHAnox.value);
+                guiSCPAManager.setPhAnox(sliderPhAnox.value);
             }
 
             buttonSetPHAireacion.onClicked: {
-                guiSCPAManager.setParam(0x05, sliderPHAireacion.value);
+                guiSCPAManager.setPhAireacion(sliderPhAireacion.value);
             }
 
             buttonSetSetPointOD.onClicked: {
-                guiSCPAManager._setSetPointOD(sliderSetPointOD.value);
+                guiSCPAManager.setSetPointOD(sliderSetPointOD.value);
             }
 
             buttonVolver.onClicked: {
-                stackView.pop()
+                stackView.pop();
             }
         }
     }

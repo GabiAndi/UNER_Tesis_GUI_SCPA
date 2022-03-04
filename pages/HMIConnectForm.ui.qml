@@ -39,6 +39,7 @@ Item {
                     id: textFieldServerIP
                     text: "192.168.1.100"
                     horizontalAlignment: Text.AlignHCenter
+                    Layout.minimumWidth: 150
                     placeholderText: qsTr("192.168.1.100")
                 }
             }
@@ -54,6 +55,7 @@ Item {
                     id: textFieldServerPort
                     text: "33600"
                     horizontalAlignment: Text.AlignHCenter
+                    Layout.minimumWidth: 150
                     placeholderText: qsTr("33600")
                 }
             }

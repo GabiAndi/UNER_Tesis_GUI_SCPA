@@ -48,7 +48,7 @@ RowLayout {
 
             color: "#ff6bbdff"
 
-            x: parent.width - width
+            x: tube.width - water.width
 
             width: 15
             height: parent.height
@@ -62,6 +62,7 @@ RowLayout {
                 loops: Animation.Infinite
 
                 PropertyAnimation {
+                    from: tube.width - water.width
                     to: 0
 
                     duration: 10 * (100000 / tube.width + tube.width)

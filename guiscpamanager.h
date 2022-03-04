@@ -28,6 +28,44 @@ class GUISCPAManager : public QObject
         explicit GUISCPAManager(QObject *parent = nullptr);
         ~GUISCPAManager();
 
+        // Variables visibles desde QML
+        Q_PROPERTY(float sensorLvFoso READ getSensorLvFoso NOTIFY sensorLvFosoChanged);
+        float getSensorLvFoso();
+
+        Q_PROPERTY(float sensorLvLodo READ getSensorLvLodo NOTIFY sensorLvLodoChanged);
+        float getSensorLvLodo();
+
+        Q_PROPERTY(float sensorTemp READ getSensorTemp NOTIFY sensorTempChanged);
+        float getSensorTemp();
+
+        Q_PROPERTY(float sensorOD READ getSensorOD NOTIFY sensorODChanged);
+        float getSensorOD();
+
+        Q_PROPERTY(float sensorPhAnox READ getSensorPhAnox NOTIFY sensorPhAnoxChanged);
+        float getSensorPhAnox();
+
+        Q_PROPERTY(float sensorPhAireacion READ getSensorPhAireacion NOTIFY sensorPhAireacionChanged);
+        float getSensorPhAireacion();
+
+        Q_PROPERTY(float sensorMotorCurrent READ getSensorMotorCurrent NOTIFY sensorMotorCurrentChanged);
+        float getSensorMotorCurrent();
+
+        Q_PROPERTY(float sensorMotorVoltaje READ getSensorMotorVoltaje NOTIFY sensorMotorVoltajeChanged);
+        float getSensorMotorVoltaje();
+
+        Q_PROPERTY(float sensorMotorTemp READ getSensorMotorTemp NOTIFY sensorMotorTempChanged);
+        float getSensorMotorTemp();
+
+        Q_PROPERTY(float sensorMotorVelocity READ getSensorMotorVelocity NOTIFY sensorMotorVelocityChanged);
+        float getSensorMotorVelocity();
+
+        Q_PROPERTY(bool stateSystemActive READ getStateSystemActive NOTIFY stateSystemActiveChanged);
+        bool getStateSystemActive();
+
+        Q_PROPERTY(float stateSetpointOD READ getStateSetpointOD NOTIFY stateSetpointODChanged);
+        float getStateSetpointOD();
+
+        // Funciones invocables desde QML
         // Conexion
         Q_INVOKABLE void connectToServer(const QString serverIP, const QString serverPort);
         Q_INVOKABLE void disconnectToServer();
@@ -35,70 +73,28 @@ class GUISCPAManager : public QObject
         Q_INVOKABLE void loginToServer(const QString user, const QString password);
         Q_INVOKABLE void forceLoginToServer(bool confirm);
 
-        // Simulacion
-        Q_INVOKABLE void setParam(hmiprotocoldata::Sensor sensor, float value);
+        // Sensores
+        Q_INVOKABLE void setLvFoso(float value);
+        Q_INVOKABLE void setLvLodo(float value);
+        Q_INVOKABLE void setTemp(float value);
+        Q_INVOKABLE void setOD(float value);
+        Q_INVOKABLE void setPhAnox(float value);
+        Q_INVOKABLE void setPhAireacion(float value);
 
-        // Datos de visualizacion
-        Q_PROPERTY(float lvFoso READ getLvFoso WRITE setLvFoso NOTIFY lvFosoChanged);
+        Q_INVOKABLE void setMotorCurrent(float value);
+        Q_INVOKABLE void setMotorVoltaje(float value);
+        Q_INVOKABLE void setMotorTemp(float value);
+        Q_INVOKABLE void setMotorVelocity(float value);
 
-        float getLvFoso();
-        void setLvFoso(float newLvFoso);
-
-        Q_PROPERTY(float lvLodo READ getLvLodo WRITE setLvLodo NOTIFY lvLodoChanged);
-
-        float getLvLodo();
-        void setLvLodo(float newLvLodo);
-
-        Q_PROPERTY(float temp READ getTemp WRITE setTemp NOTIFY tempChanged);
-
-        float getTemp();
-        void setTemp(float newTemp);
-
-        Q_PROPERTY(float od READ getOD WRITE setOD NOTIFY odChanged);
-
-        float getOD();
-        void setOD(float newOD);
-
-        Q_PROPERTY(float phAnox READ getPhAnox WRITE setPhAnox NOTIFY phAnoxChanged);
-
-        float getPhAnox();
-        void setPhAnox(float newPhAnox);
-
-        Q_PROPERTY(float phAireacion READ getPhAireacion WRITE setPhAireacion NOTIFY phAireacionChanged);
-
-        float getPhAireacion();
-        void setPhAireacion(float newPhAireacion);
-
-        Q_PROPERTY(float motorCurrent READ getMotorCurrent WRITE setMotorCurrent NOTIFY motorCurrentChanged);
-
-        float getMotorCurrent();
-        void setMotorCurrent(float newMotorCurrent);
-
-        Q_PROPERTY(float motorVoltaje READ getMotorVoltaje WRITE setMotorVoltaje NOTIFY motorVoltajeChanged);
-
-        float getMotorVoltaje();
-        void setMotorVoltaje(float newMotorVoltaje);
-
-        Q_PROPERTY(float motorTemp READ getMotorTemp WRITE setMotorTemp NOTIFY motorTempChanged);
-
-        float getMotorTemp();
-        void setMotorTemp(float newMotorTemp);
-
-        Q_PROPERTY(float motorVelocity READ getMotorVelocity WRITE setMotorVelocity NOTIFY motorVelocityChanged);
-
-        float getMotorVelocity();
-        void setMotorVelocity(float newMotorVelocity);
-
-        Q_PROPERTY(float setPointOD READ getSetPointOD WRITE setSetPointOD NOTIFY setPointODChanged);
-
-        float getSetPointOD();
-        void setSetPointOD(float newSetPointOD);
-
-        Q_INVOKABLE void _setSetPointOD(float value);
-
-        // Estado del control
+        // Estado del sistema
         Q_INVOKABLE void initSystem();
         Q_INVOKABLE void stopSystem();
+
+        Q_INVOKABLE void setSetPointOD(float value);
+
+    public slots:
+        void getSensorValue(hmiprotocoldata::Sensor sensor, float value);
+        void getSystemState(hmiprotocoldata::SystemState state, float value);
 
     signals:
         // Señales al hilo del administrador de cliente
@@ -109,7 +105,8 @@ class GUISCPAManager : public QObject
         void sendLogin(const QString user, const QString password);
         void sendForceLogin(bool confirm);
 
-        void sendSetParam(hmiprotocoldata::Sensor sensor, float value);
+        void sendSetSensorValue(hmiprotocoldata::Sensor sensor, float value);
+        void sendSetSystemState(hmiprotocoldata::SystemState state, float value);
 
         // Señales para QML
         // Conexion
@@ -127,50 +124,46 @@ class GUISCPAManager : public QObject
         void loginTimeOut();    // Tiempo de conexion excedido
         void otherUserLogin();  // Otro usuario inicio sesión
 
-        // Parametros recividos de los sensores
-        // Pileta
-        void lvFosoChanged();
-        void lvLodoChanged();
-        void tempChanged();
-        void odChanged();
-        void phAnoxChanged();
-        void phAireacionChanged();
+        // Señales para QML
+        // Sensores
+        void sensorLvFosoChanged();
+        void sensorLvLodoChanged();
+        void sensorTempChanged();
+        void sensorODChanged();
+        void sensorPhAnoxChanged();
+        void sensorPhAireacionChanged();
 
-        // Motores
-        void motorCurrentChanged();
-        void motorVoltajeChanged();
-        void motorTempChanged();
-        void motorVelocityChanged();
+        void sensorMotorCurrentChanged();
+        void sensorMotorVoltajeChanged();
+        void sensorMotorTempChanged();
+        void sensorMotorVelocityChanged();
 
-        // Setpoint
-        void setPointODChanged();
-
-        // Estado del sistema
-        void sendInitSystem();
-        void sendStopSystem();
-
-        // Estado del sistema
-        void sendSetPointOD(float value);
+        void stateSystemActiveChanged();
+        void stateSetpointODChanged();
 
     private:
         // Hilo de administración de cliente
         QThread *hmiClientThread = nullptr;
         HMIClientManager *hmiClientManager = nullptr;
 
+        // Variables QML
         // Valores de los sensores
-        float lvFoso = 0;
-        float lvLodo = 0;
-        float temp = 0;
-        float od = 0;
-        float phAnox = 0;
-        float phAireacion = 0;
+        float sensorLvFoso = 0;
+        float sensorLvLodo = 0;
+        float sensorTemp = 0;
+        float sensorOD = 0;
+        float sensorPhAnox = 0;
+        float sensorPhAireacion = 0;
 
-        float motorCurrent = 0;
-        float motorVoltaje = 0;
-        float motorTemp = 0;
-        float motorVelocity = 0;
+        float sensorMotorCurrent = 0;
+        float sensorMotorVoltaje = 0;
+        float sensorMotorTemp = 0;
+        float sensorMotorVelocity = 0;
 
-        float setPointOD = 0;
+        // Estado del sistema
+        bool stateSystemActive = false;
+
+        float stateSetpointOD = 0;
 };
 
 #endif // GUISCPAMANAGER_H

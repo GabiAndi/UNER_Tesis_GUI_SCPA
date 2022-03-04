@@ -54,7 +54,7 @@ void HMIClientManager::init()
     // Timer de estado
     timerData = new QTimer(this);
 
-    connect(timerData, &QTimer::timeout, this, &HMIClientManager::sendGetSistemState);
+    connect(timerData, &QTimer::timeout, this, &HMIClientManager::sync);
 }
 
 void HMIClientManager::hmiConnect(const QString serverIP, const QString serverPort)
@@ -92,25 +92,27 @@ void HMIClientManager::sendAlive()
     hmiProtocol->write(Command::KEEP_ALIVE, QByteArray().append(KeepAliveMode::REPLY));
 }
 
-void HMIClientManager::sendGetSistemState()
+void HMIClientManager::sync()
 {
     // Enviamos la peticion de estado de cada sensor
-    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_LV_FOSO));
-    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_LV_LODO));
-    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_TEMP));
-    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_OD));
-    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_PH_ANOX));
-    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_PH_AIREACION));
+    hmiProtocol->write(Command::GET_SENSOR, QByteArray().append(Sensor::SENSOR_LV_FOSO));
+    hmiProtocol->write(Command::GET_SENSOR, QByteArray().append(Sensor::SENSOR_LV_LODO));
+    hmiProtocol->write(Command::GET_SENSOR, QByteArray().append(Sensor::SENSOR_TEMP));
+    hmiProtocol->write(Command::GET_SENSOR, QByteArray().append(Sensor::SENSOR_OD));
+    hmiProtocol->write(Command::GET_SENSOR, QByteArray().append(Sensor::SENSOR_PH_ANOX));
+    hmiProtocol->write(Command::GET_SENSOR, QByteArray().append(Sensor::SENSOR_PH_AIREACION));
 
-    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_MOTOR_CURRENT));
-    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_MOTOR_VOLTAJE));
-    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_MOTOR_TEMP));
-    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SENSOR_MOTOR_VELOCITY));
+    hmiProtocol->write(Command::GET_SENSOR, QByteArray().append(Sensor::SENSOR_MOTOR_CURRENT));
+    hmiProtocol->write(Command::GET_SENSOR, QByteArray().append(Sensor::SENSOR_MOTOR_VOLTAJE));
+    hmiProtocol->write(Command::GET_SENSOR, QByteArray().append(Sensor::SENSOR_MOTOR_TEMP));
+    hmiProtocol->write(Command::GET_SENSOR, QByteArray().append(Sensor::SENSOR_MOTOR_VELOCITY));
 
-    hmiProtocol->write(Command::GET_PARAM, QByteArray().append(Sensor::SET_POINT_OD));
+    // Enviamos la petición del estado del sistema
+    hmiProtocol->write(Command::GET_SYSTEM_STATE, QByteArray().append(SystemState::CONTROL_SYSTEM));
+    hmiProtocol->write(Command::GET_SYSTEM_STATE, QByteArray().append(SystemState::SETPOINT_OD));
 }
 
-void HMIClientManager::sendSetParam(Sensor sensor, float value)
+void HMIClientManager::sendSetSensorValue(Sensor sensor, float value)
 {
     DataConverter converter;
 
@@ -124,33 +126,24 @@ void HMIClientManager::sendSetParam(Sensor sensor, float value)
     data.append(converter.u8[2]);
     data.append(converter.u8[3]);
 
-    hmiProtocol->write(Command::SET_PARAM, data);
+    hmiProtocol->write(Command::SET_SENSOR, data);
 }
 
-void HMIClientManager::sendSetPointOD(float setPointOD)
+void HMIClientManager::sendSetSystemState(SystemState state, float value)
 {
     DataConverter converter;
 
-    converter.f[0] = setPointOD;
+    converter.f[0] = value;
 
     QByteArray data;
 
+    data.append(state);
     data.append(converter.u8[0]);
     data.append(converter.u8[1]);
     data.append(converter.u8[2]);
     data.append(converter.u8[3]);
 
-    hmiProtocol->write(Command::SET_SETPOINT_OD, data);
-}
-
-void HMIClientManager::sendInitSystem()
-{
-    hmiProtocol->write(Command::INIT_SYSTEM, QByteArray().append(Request::REQUEST_OK));
-}
-
-void HMIClientManager::sendStopSystem()
-{
-    hmiProtocol->write(Command::STOP_SYSTEM, QByteArray().append(Request::REQUEST_OK));
+    hmiProtocol->write(Command::SET_SYSTEM_STATE, data);
 }
 
 void HMIClientManager::clientConnection()
@@ -215,7 +208,11 @@ void HMIClientManager::newPackage(const uint8_t cmd, const QByteArray payload)
             break;
         }
 
-        // Login request
+        /*
+         * LOGIN_REQUEST
+         *
+         * Recive el estado del intento de logueo
+         */
         case Command::LOGIN_REQUEST:
         {
             switch ((LoginRequest)(payload.at(0)))
@@ -236,7 +233,11 @@ void HMIClientManager::newPackage(const uint8_t cmd, const QByteArray payload)
             break;
         }
 
-        // Informe de desconexión
+        /*
+         * DISCONNECT_CODE
+         *
+         * Recibe la causa de la desconexion
+         */
         case Command::DISCONNECT_CODE:
         {
             hmiClientState->disconnectionCode = true;
@@ -255,8 +256,12 @@ void HMIClientManager::newPackage(const uint8_t cmd, const QByteArray payload)
             break;
         }
 
-        // Respuesta de la obtencion de parametros
-        case Command::REQUEST_GET_PARAM:
+        /*
+         * REQUEST_GET_SENSOR
+         *
+         * Recibe la respuesta de valores de los sensores
+         */
+        case Command::REQUEST_GET_SENSOR:
         {
             DataConverter converter;
 
@@ -265,76 +270,54 @@ void HMIClientManager::newPackage(const uint8_t cmd, const QByteArray payload)
             converter.u8[2] = payload.at(3);
             converter.u8[3] = payload.at(4);
 
-            switch ((Sensor)(payload.at(0)))
-            {
-                case Sensor::SENSOR_LV_FOSO:
-                    emit setLvFoso(converter.f[0]);
-
-                    break;
-
-                case Sensor::SENSOR_LV_LODO:
-                    emit setLvLodo(converter.f[0]);
-
-                    break;
-
-                case Sensor::SENSOR_TEMP:
-                    emit setTemp(converter.f[0]);
-
-                    break;
-
-                case Sensor::SENSOR_OD:
-                    emit setOD(converter.f[0]);
-
-                    break;
-
-                case Sensor::SENSOR_PH_ANOX:
-                    emit setPhAnox(converter.f[0]);
-
-                    break;
-
-                case Sensor::SENSOR_PH_AIREACION:
-                    emit setPhAireacion(converter.f[0]);
-
-                    break;
-
-                case Sensor::SENSOR_MOTOR_CURRENT:
-                    emit setMotorCurrent(converter.f[0]);
-
-                    break;
-
-                case Sensor::SENSOR_MOTOR_VOLTAJE:
-                    emit setMotorVoltaje(converter.f[0]);
-
-                    break;
-
-                case Sensor::SENSOR_MOTOR_TEMP:
-                    emit setMotorTemp(converter.f[0]);
-
-                    break;
-
-                case Sensor::SENSOR_MOTOR_VELOCITY:
-                    emit setMotorVelocity(converter.f[0]);
-
-                    break;
-
-                case Sensor::SET_POINT_OD:
-                    emit setSetPoint(converter.f[0]);
-
-                    break;
-            }
+            emit getSensorValue((Sensor)(payload.at(0)), converter.f[0]);
 
             break;
         }
 
-        // Respuesta de seteo de parametros de simulacion
-        case Command::REQUEST_SET_PARAM:
+        /*
+         * REQUEST_SET_SENSOR
+         *
+         * Recibe la respuesta del seteo de los valores de los sensores
+         */
+        case Command::REQUEST_SET_SENSOR:
         {
 
 
             break;
         }
 
-        // Comando no valido
+        /*
+         * REQUEST_GET_SYSTEM_STATE
+         *
+         * Recibe la respuesta del estado del sistema
+         */
+        case Command::REQUEST_GET_SYSTEM_STATE:
+        {
+            DataConverter converter;
+
+            converter.u8[0] = payload.at(1);
+            converter.u8[1] = payload.at(2);
+            converter.u8[2] = payload.at(3);
+            converter.u8[3] = payload.at(4);
+
+            emit getSystemState((SystemState)(payload.at(0)), converter.f[0]);
+
+            break;
+        }
+
+        /*
+         * REQUEST_SET_SYSTEM_STATE
+         *
+         * Recibe la respuesta del seteo del estado del sistema
+         */
+        case Command::REQUEST_SET_SYSTEM_STATE:
+        {
+
+
+            break;
+        }
+
         default:
         {
             break;

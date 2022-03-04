@@ -35,29 +35,12 @@ GUISCPAManager::GUISCPAManager(QObject *parent)
     connect(hmiClientManager, &HMIClientManager::otherUserLogin, this, &GUISCPAManager::otherUserLogin);
 
     // Comandos
-    connect(this, &GUISCPAManager::sendSetParam, hmiClientManager, &HMIClientManager::sendSetParam);
+    connect(this, &GUISCPAManager::sendSetSensorValue, hmiClientManager, &HMIClientManager::sendSetSensorValue);
+    connect(this, &GUISCPAManager::sendSetSystemState, hmiClientManager, &HMIClientManager::sendSetSystemState);
 
     // Parametros
-    connect(hmiClientManager, &HMIClientManager::setLvFoso, this, &GUISCPAManager::setLvFoso);
-    connect(hmiClientManager, &HMIClientManager::setLvLodo, this, &GUISCPAManager::setLvLodo);
-    connect(hmiClientManager, &HMIClientManager::setTemp, this, &GUISCPAManager::setTemp);
-    connect(hmiClientManager, &HMIClientManager::setOD, this, &GUISCPAManager::setOD);
-    connect(hmiClientManager, &HMIClientManager::setPhAnox, this, &GUISCPAManager::setPhAnox);
-    connect(hmiClientManager, &HMIClientManager::setPhAireacion, this, &GUISCPAManager::setPhAireacion);
-
-    connect(hmiClientManager, &HMIClientManager::setMotorCurrent, this, &GUISCPAManager::setMotorCurrent);
-    connect(hmiClientManager, &HMIClientManager::setMotorVoltaje, this, &GUISCPAManager::setMotorVoltaje);
-    connect(hmiClientManager, &HMIClientManager::setMotorTemp, this, &GUISCPAManager::setMotorTemp);
-    connect(hmiClientManager, &HMIClientManager::setMotorVelocity, this, &GUISCPAManager::setMotorVelocity);
-
-    connect(hmiClientManager, &HMIClientManager::setSetPoint, this, &GUISCPAManager::setSetPointOD);
-
-    // Estado del sistema
-    connect(this, &GUISCPAManager::sendInitSystem, hmiClientManager, &HMIClientManager::sendInitSystem);
-    connect(this, &GUISCPAManager::sendStopSystem, hmiClientManager, &HMIClientManager::sendStopSystem);
-
-    // Set point OD
-    connect(this, &GUISCPAManager::sendSetPointOD, hmiClientManager, &HMIClientManager::sendSetPointOD);
+    connect(hmiClientManager, &HMIClientManager::getSensorValue, this, &GUISCPAManager::getSensorValue);
+    connect(hmiClientManager, &HMIClientManager::getSystemState, this, &GUISCPAManager::getSystemState);
 
     hmiClientThread->start();
 }
@@ -69,6 +52,66 @@ GUISCPAManager::~GUISCPAManager()
 
     delete hmiClientManager;
     delete hmiClientThread;
+}
+
+float GUISCPAManager::getSensorLvFoso()
+{
+    return sensorLvFoso;
+}
+
+float GUISCPAManager::getSensorLvLodo()
+{
+    return sensorLvLodo;
+}
+
+float GUISCPAManager::getSensorTemp()
+{
+    return sensorTemp;
+}
+
+float GUISCPAManager::getSensorOD()
+{
+    return sensorOD;
+}
+
+float GUISCPAManager::getSensorPhAnox()
+{
+    return sensorPhAnox;
+}
+
+float GUISCPAManager::getSensorPhAireacion()
+{
+    return sensorPhAireacion;
+}
+
+float GUISCPAManager::getSensorMotorCurrent()
+{
+    return sensorMotorCurrent;
+}
+
+float GUISCPAManager::getSensorMotorVoltaje()
+{
+    return sensorMotorVoltaje;
+}
+
+float GUISCPAManager::getSensorMotorTemp()
+{
+    return sensorMotorTemp;
+}
+
+float GUISCPAManager::getSensorMotorVelocity()
+{
+    return sensorMotorVelocity;
+}
+
+bool GUISCPAManager::getStateSystemActive()
+{
+    return stateSystemActive;
+}
+
+float GUISCPAManager::getStateSetpointOD()
+{
+    return stateSetpointOD;
 }
 
 void GUISCPAManager::connectToServer(const QString serverIP, const QString serverPort)
@@ -91,154 +134,139 @@ void GUISCPAManager::forceLoginToServer(bool confirm)
     emit sendForceLogin(confirm);
 }
 
-void GUISCPAManager::setParam(Sensor sensor, float value)
+void GUISCPAManager::setLvFoso(float value)
 {
-    emit sendSetParam(sensor, value);
+    emit sendSetSensorValue(Sensor::SENSOR_LV_FOSO, value);
 }
 
-float GUISCPAManager::getLvFoso()
+void GUISCPAManager::setLvLodo(float value)
 {
-    return lvFoso;
+    emit sendSetSensorValue(Sensor::SENSOR_LV_LODO, value);
 }
 
-void GUISCPAManager::setLvFoso(float newLvFoso)
+void GUISCPAManager::setTemp(float value)
 {
-    lvFoso = newLvFoso;
-
-    emit lvFosoChanged();
+    emit sendSetSensorValue(Sensor::SENSOR_TEMP, value);
 }
 
-float GUISCPAManager::getLvLodo()
+void GUISCPAManager::setOD(float value)
 {
-    return lvLodo;
+    emit sendSetSensorValue(Sensor::SENSOR_OD, value);
 }
 
-void GUISCPAManager::setLvLodo(float newLvLodo)
+void GUISCPAManager::setPhAnox(float value)
 {
-    lvLodo = newLvLodo;
-
-    emit lvLodoChanged();
+    emit sendSetSensorValue(Sensor::SENSOR_PH_ANOX, value);
 }
 
-float GUISCPAManager::getTemp()
+void GUISCPAManager::setPhAireacion(float value)
 {
-    return temp;
+    emit sendSetSensorValue(Sensor::SENSOR_PH_AIREACION, value);
 }
 
-void GUISCPAManager::setTemp(float newTemp)
+void GUISCPAManager::setMotorCurrent(float value)
 {
-    temp = newTemp;
-
-    emit tempChanged();
+    emit sendSetSensorValue(Sensor::SENSOR_MOTOR_CURRENT, value);
 }
 
-float GUISCPAManager::getOD()
+void GUISCPAManager::setMotorVoltaje(float value)
 {
-    return od;
+    emit sendSetSensorValue(Sensor::SENSOR_MOTOR_VOLTAJE, value);
 }
 
-void GUISCPAManager::setOD(float newOD)
+void GUISCPAManager::setMotorTemp(float value)
 {
-    od = newOD;
-
-    emit odChanged();
+    emit sendSetSensorValue(Sensor::SENSOR_MOTOR_TEMP, value);
 }
 
-float GUISCPAManager::getPhAnox()
+void GUISCPAManager::setMotorVelocity(float value)
 {
-    return phAnox;
-}
-
-void GUISCPAManager::setPhAnox(float newPhAnox)
-{
-    phAnox = newPhAnox;
-
-    emit phAnoxChanged();
-}
-
-float GUISCPAManager::getPhAireacion()
-{
-    return phAireacion;
-}
-
-void GUISCPAManager::setPhAireacion(float newPhAireacion)
-{
-    phAireacion = newPhAireacion;
-
-    emit phAireacionChanged();
-}
-
-float GUISCPAManager::getMotorCurrent()
-{
-    return motorCurrent;
-}
-
-void GUISCPAManager::setMotorCurrent(float newMotorCurrent)
-{
-    motorCurrent = newMotorCurrent;
-
-    emit motorCurrentChanged();
-}
-
-float GUISCPAManager::getMotorVoltaje()
-{
-    return motorVoltaje;
-}
-
-void GUISCPAManager::setMotorVoltaje(float newMotorVoltaje)
-{
-    motorVoltaje = newMotorVoltaje;
-
-    emit motorVoltajeChanged();
-}
-
-float GUISCPAManager::getMotorTemp()
-{
-    return motorTemp;
-}
-
-void GUISCPAManager::setMotorTemp(float newMotorTemp)
-{
-    motorTemp = newMotorTemp;
-
-    emit motorTempChanged();
-}
-
-float GUISCPAManager::getMotorVelocity()
-{
-    return motorVelocity;
-}
-
-void GUISCPAManager::setMotorVelocity(float newMotorVelocity)
-{
-    motorVelocity = newMotorVelocity;
-
-    emit motorVelocityChanged();
-}
-
-float GUISCPAManager::getSetPointOD()
-{
-    return setPointOD;
-}
-
-void GUISCPAManager::setSetPointOD(float newSetPointOD)
-{
-    setPointOD = newSetPointOD;
-
-    emit setPointODChanged();
-}
-
-void GUISCPAManager::_setSetPointOD(float value)
-{
-    emit sendSetPointOD(value);
+    emit sendSetSensorValue(Sensor::SENSOR_MOTOR_VELOCITY, value);
 }
 
 void GUISCPAManager::initSystem()
 {
-    emit sendInitSystem();
+    emit sendSetSystemState(SystemState::CONTROL_SYSTEM, true);
 }
 
 void GUISCPAManager::stopSystem()
 {
-    emit sendStopSystem();
+    emit sendSetSystemState(SystemState::CONTROL_SYSTEM, false);
+}
+
+void GUISCPAManager::setSetPointOD(float value)
+{
+    emit sendSetSystemState(SystemState::SETPOINT_OD, value);
+}
+
+void GUISCPAManager::getSensorValue(Sensor sensor, float value)
+{
+    switch (sensor)
+    {
+        case Sensor::SENSOR_LV_FOSO:
+            sensorLvFoso = value;
+
+            break;
+
+        case Sensor::SENSOR_LV_LODO:
+            sensorLvLodo = value;
+
+            break;
+
+        case Sensor::SENSOR_TEMP:
+            sensorTemp = value;
+
+            break;
+
+        case Sensor::SENSOR_OD:
+            sensorOD = value;
+
+            break;
+
+        case Sensor::SENSOR_PH_ANOX:
+            sensorPhAnox = value;
+
+            break;
+
+        case Sensor::SENSOR_PH_AIREACION:
+            sensorPhAireacion = value;
+
+            break;
+
+        case Sensor::SENSOR_MOTOR_CURRENT:
+            sensorMotorCurrent = value;
+
+            break;
+
+        case Sensor::SENSOR_MOTOR_VOLTAJE:
+            sensorMotorVoltaje = value;
+
+            break;
+
+        case Sensor::SENSOR_MOTOR_TEMP:
+            sensorMotorTemp = value;
+
+            break;
+
+        case Sensor::SENSOR_MOTOR_VELOCITY:
+            sensorMotorVelocity = value;
+
+            break;
+    }
+}
+
+void GUISCPAManager::getSystemState(SystemState state, float value)
+{
+    switch (state)
+    {
+        case SystemState::CONTROL_SYSTEM:
+            stateSystemActive = value;
+
+            break;
+
+        case SystemState::SETPOINT_OD:
+            stateSetpointOD = value;
+
+            break;
+    }
 }
