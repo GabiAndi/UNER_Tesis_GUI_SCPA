@@ -13,7 +13,7 @@ find_package(Qt6 COMPONENTS Quick REQUIRED)
 find_package(Qt6 COMPONENTS Network REQUIRED)
 find_package(Qt6 COMPONENTS Svg REQUIRED)
 
-# Libreria de protocolo de comunicacíon
+# Libreria de protocolo de comunicación
 add_subdirectory("../HMIProtocol" "../build-HMIProtocol")
 
 qt_add_executable(${PROJECT_NAME}
