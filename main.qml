@@ -273,7 +273,6 @@ ApplicationWindow {
                 sliderLvFoso.value = guiSCPAManager.sensorLvFoso;
                 sliderLvLodo.value = guiSCPAManager.sensorLvLodo;
                 sliderTemp.value = guiSCPAManager.sensorTemp;
-                sliderOD.value = guiSCPAManager.sensorOD;
                 sliderPhAnox.value = guiSCPAManager.sensorPhAnox;
                 sliderPhAireacion.value = guiSCPAManager.sensorPhAireacion;
 
@@ -290,10 +289,6 @@ ApplicationWindow {
 
             buttonSetTemp.onClicked: {
                 guiSCPAManager.setTemp(sliderTemp.value);
-            }
-
-            buttonSetOD.onClicked: {
-                guiSCPAManager.setOD(sliderOD.value);
             }
 
             buttonSetPHAnox.onClicked: {
