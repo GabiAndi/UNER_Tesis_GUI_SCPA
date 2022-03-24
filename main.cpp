@@ -6,7 +6,7 @@
 /* Entrada del programa para interfaz de usuario.            */
 /*************************************************************/
 
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 
 #include "guiscpamanager.h"
@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<GUISCPAManager>("GUISCPA", 1, 0, "GUISCPAManager");
 
     // Iniciamos la aplicacion
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
 

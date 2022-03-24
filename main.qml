@@ -249,6 +249,10 @@ ApplicationWindow {
                 switchStateSystem.checked ? guiSCPAManager.initSystem() : guiSCPAManager.stopSystem();
             }
 
+            buttonControlador.onClicked: {
+                stackView.push(hmiSCPAControlador)
+            }
+
             Timer {
                 id: timer
                 interval: 300
@@ -260,6 +264,54 @@ ApplicationWindow {
                     parent.hMISCPAMotorStatusM01.hMICircularProgressBarCorriente.currentValue = guiSCPAManager.sensorMotorCurrent;
                     parent.hMISCPAMotorStatusM01.hMICircularProgressBarVoltaje.currentValue = guiSCPAManager.sensorMotorVoltaje;
                     parent.hMISCPAMotorStatusM01.hMICircularProgressBarVelocidad.currentValue = guiSCPAManager.sensorMotorVelocity;
+                }
+            }
+        }
+    }
+
+    Component {
+        id: hmiSCPAControlador
+
+        HMISCPAControlador {
+            Component.onCompleted: {
+                sliderKp.value = guiSCPAManager.stateKp;
+                sliderKd.value = guiSCPAManager.stateKd;
+                sliderKi.value = guiSCPAManager.stateKi;
+
+                guiSCPAManager.chartUpdate(dataSeriesOD, dataSeriesRPM,
+                                           dataSeriesRPMKp, dataSeriesRPMKd, dataSeriesRPMKi);
+            }
+
+            buttonKp.onClicked: {
+                guiSCPAManager.setKp(sliderKp.value);
+            }
+
+            buttonKd.onClicked: {
+                guiSCPAManager.setKd(sliderKd.value);
+            }
+
+            buttonKi.onClicked: {
+                guiSCPAManager.setKi(sliderKi.value);
+            }
+
+            buttonVolver.onClicked: {
+                stackView.pop()
+            }
+
+            buttonParadaEmergencia.onClicked: {
+
+            }
+
+            Timer {
+                id: timer
+
+                interval: 1000
+                repeat: true
+                running: true
+
+                onTriggered: {
+                    guiSCPAManager.chartUpdate(dataSeriesOD, dataSeriesRPM,
+                                               dataSeriesRPMKp, dataSeriesRPMKd, dataSeriesRPMKi);
                 }
             }
         }

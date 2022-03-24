@@ -110,6 +110,14 @@ void HMIClientManager::sync()
     // Enviamos la petición del estado del sistema
     hmiProtocol->write(Command::GET_SYSTEM_STATE, QByteArray().append(SystemState::CONTROL_SYSTEM));
     hmiProtocol->write(Command::GET_SYSTEM_STATE, QByteArray().append(SystemState::SETPOINT_OD));
+
+    hmiProtocol->write(Command::GET_SYSTEM_STATE, QByteArray().append(SystemState::PID_ERROR));
+    hmiProtocol->write(Command::GET_SYSTEM_STATE, QByteArray().append(SystemState::PID_KP));
+    hmiProtocol->write(Command::GET_SYSTEM_STATE, QByteArray().append(SystemState::PID_RPM_KP));
+    hmiProtocol->write(Command::GET_SYSTEM_STATE, QByteArray().append(SystemState::PID_KD));
+    hmiProtocol->write(Command::GET_SYSTEM_STATE, QByteArray().append(SystemState::PID_RPM_KD));
+    hmiProtocol->write(Command::GET_SYSTEM_STATE, QByteArray().append(SystemState::PID_KI));
+    hmiProtocol->write(Command::GET_SYSTEM_STATE, QByteArray().append(SystemState::PID_RPM_KI));
 }
 
 void HMIClientManager::sendSetSensorValue(Sensor sensor, float value)

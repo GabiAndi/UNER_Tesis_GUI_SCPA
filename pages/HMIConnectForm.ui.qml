@@ -37,10 +37,10 @@ Item {
 
                 TextField {
                     id: textFieldServerIP
-                    text: "192.168.1.100"
+                    text: "192.168.10.100"
                     horizontalAlignment: Text.AlignHCenter
                     Layout.minimumWidth: 150
-                    placeholderText: qsTr("192.168.1.100")
+                    placeholderText: qsTr("192.168.10.100")
                 }
             }
 

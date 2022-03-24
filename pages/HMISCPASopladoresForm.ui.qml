@@ -9,6 +9,7 @@ Item {
     property alias buttonParadaEmergencia: buttonParadaEmergencia
     property alias hMISCPAMotorStatusM01: hMISCPAMotorStatusM01
     property alias switchStateSystem: switchStateSystem
+    property alias buttonControlador: buttonControlador
 
     Pane {
         id: pane
@@ -70,11 +71,18 @@ Item {
                     Layout.fillWidth: true
                 }
 
-
-
                 Switch {
                     id: switchStateSystem
                     text: qsTr("Encendido")
+                }
+
+                Item {
+                    id: item4
+                    Layout.fillWidth: true
+                }
+                Button {
+                    id: buttonControlador
+                    text: qsTr("Controlador")
                 }
                 Item {
                     id: item3
@@ -93,7 +101,7 @@ Item {
 /*##^##
 Designer {
     D{i:0;autoSize:true;height:600;width:800}D{i:3}D{i:5}D{i:7}D{i:6}D{i:4}D{i:9}D{i:10}
-D{i:11}D{i:8}D{i:2}D{i:1}
+D{i:11}D{i:12}D{i:13}D{i:14}D{i:15}D{i:8}D{i:2}D{i:1}
 }
 ##^##*/
 

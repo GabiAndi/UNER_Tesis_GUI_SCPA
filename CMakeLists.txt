@@ -12,6 +12,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt6 COMPONENTS Quick REQUIRED)
 find_package(Qt6 COMPONENTS Network REQUIRED)
 find_package(Qt6 COMPONENTS Svg REQUIRED)
+find_package(Qt6 COMPONENTS Charts REQUIRED)
 
 # Libreria de protocolo de comunicación
 add_subdirectory("../HMIProtocol" "../build-HMIProtocol")
@@ -57,6 +58,8 @@ qt_add_resources(${PROJECT_NAME} "resources"
         "pages/HMISCPASopladoresForm.ui.qml"
         "pages/HMISCPASimulacion.qml"
         "pages/HMISCPASimulacionForm.ui.qml"
+        "pages/HMISCPAControlador.qml"
+        "pages/HMISCPAControladorForm.ui.qml"
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -64,6 +67,7 @@ target_link_libraries(${PROJECT_NAME}
         Qt6::Quick
         Qt6::Network
         Qt6::Svg
+        Qt6::Charts
         HMIProtocol
 )
 

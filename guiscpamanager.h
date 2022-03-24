@@ -13,7 +13,7 @@
 #include <QObject>
 
 #include <QThread>
-#include <QDebug>
+#include <QLineSeries>
 
 #include <qqml.h>
 
@@ -29,41 +29,81 @@ class GUISCPAManager : public QObject
         ~GUISCPAManager();
 
         // Variables visibles desde QML
-        Q_PROPERTY(float sensorLvFoso READ getSensorLvFoso NOTIFY sensorLvFosoChanged);
+        Q_PROPERTY(float sensorLvFoso READ getSensorLvFoso WRITE setSensorLvFoso NOTIFY sensorLvFosoChanged);
+        void setSensorLvFoso(float sensorLvFoso);
         float getSensorLvFoso();
 
-        Q_PROPERTY(float sensorLvLodo READ getSensorLvLodo NOTIFY sensorLvLodoChanged);
+        Q_PROPERTY(float sensorLvLodo READ getSensorLvLodo WRITE setSensorLvLodo NOTIFY sensorLvLodoChanged);
+        void setSensorLvLodo(float sensorLvLodo);
         float getSensorLvLodo();
 
-        Q_PROPERTY(float sensorTemp READ getSensorTemp NOTIFY sensorTempChanged);
+        Q_PROPERTY(float sensorTemp READ getSensorTemp WRITE setSensorTemp NOTIFY sensorTempChanged);
+        void setSensorTemp(float sensorTemp);
         float getSensorTemp();
 
-        Q_PROPERTY(float sensorOD READ getSensorOD NOTIFY sensorODChanged);
+        Q_PROPERTY(float sensorOD READ getSensorOD WRITE setSensorOD NOTIFY sensorODChanged);
+        void setSensorOD(float sensorOD);
         float getSensorOD();
 
-        Q_PROPERTY(float sensorPhAnox READ getSensorPhAnox NOTIFY sensorPhAnoxChanged);
+        Q_PROPERTY(float sensorPhAnox READ getSensorPhAnox WRITE setSensorPhAnox NOTIFY sensorPhAnoxChanged);
+        void setSensorPhAnox(float sensorPhAnox);
         float getSensorPhAnox();
 
-        Q_PROPERTY(float sensorPhAireacion READ getSensorPhAireacion NOTIFY sensorPhAireacionChanged);
+        Q_PROPERTY(float sensorPhAireacion READ getSensorPhAireacion WRITE setSensorPhAireacion NOTIFY sensorPhAireacionChanged);
+        void setSensorPhAireacion(float sensorPhAireacion);
         float getSensorPhAireacion();
 
-        Q_PROPERTY(float sensorMotorCurrent READ getSensorMotorCurrent NOTIFY sensorMotorCurrentChanged);
+        Q_PROPERTY(float sensorMotorCurrent READ getSensorMotorCurrent WRITE setSensorMotorCurrent NOTIFY sensorMotorCurrentChanged);
+        void setSensorMotorCurrent(float sensorMotorCurrent);
         float getSensorMotorCurrent();
 
-        Q_PROPERTY(float sensorMotorVoltaje READ getSensorMotorVoltaje NOTIFY sensorMotorVoltajeChanged);
+        Q_PROPERTY(float sensorMotorVoltaje READ getSensorMotorVoltaje WRITE setSensorMotorVoltaje NOTIFY sensorMotorVoltajeChanged);
+        void setSensorMotorVoltaje(float sensorMotorVoltaje);
         float getSensorMotorVoltaje();
 
-        Q_PROPERTY(float sensorMotorTemp READ getSensorMotorTemp NOTIFY sensorMotorTempChanged);
+        Q_PROPERTY(float sensorMotorTemp READ getSensorMotorTemp WRITE setSensorMotorTemp NOTIFY sensorMotorTempChanged);
+        void setSensorMotorTemp(float sensorMotorTemp);
         float getSensorMotorTemp();
 
-        Q_PROPERTY(float sensorMotorVelocity READ getSensorMotorVelocity NOTIFY sensorMotorVelocityChanged);
+        Q_PROPERTY(float sensorMotorVelocity READ getSensorMotorVelocity WRITE setSensorMotorVelocity NOTIFY sensorMotorVelocityChanged);
+        void setSensorMotorVelocity(float sensorMotorVelocity);
         float getSensorMotorVelocity();
 
-        Q_PROPERTY(bool stateSystemActive READ getStateSystemActive NOTIFY stateSystemActiveChanged);
+        Q_PROPERTY(bool stateSystemActive READ getStateSystemActive WRITE setStateSystemActive NOTIFY stateSystemActiveChanged);
+        void setStateSystemActive(float stateSystemActive);
         bool getStateSystemActive();
 
-        Q_PROPERTY(float stateSetpointOD READ getStateSetpointOD NOTIFY stateSetpointODChanged);
+        Q_PROPERTY(float stateSetpointOD READ getStateSetpointOD WRITE setStateSetpointOD NOTIFY stateSetpointODChanged);
+        void setStateSetpointOD(float stateSetpointOD);
         float getStateSetpointOD();
+
+        Q_PROPERTY(float stateError READ getStateError WRITE setStateError NOTIFY stateErrorChanged);
+        void setStateError(float error);
+        float getStateError();
+
+        Q_PROPERTY(float stateKp READ getStateKp WRITE setStateKp NOTIFY stateKpChanged);
+        void setStateKp(float kp);
+        float getStateKp();
+
+        Q_PROPERTY(float stateRPMKp READ getStateRPMKp WRITE setStateKp NOTIFY stateRPMKpChanged);
+        void setStateRPMKp(float rpmKp);
+        float getStateRPMKp();
+
+        Q_PROPERTY(float stateKd READ getStateKd WRITE setStateKd NOTIFY stateKdChanged);
+        void setStateKd(float kd);
+        float getStateKd();
+
+        Q_PROPERTY(float stateRPMKd READ getStateRPMKd WRITE setStateKd NOTIFY stateRPMKdChanged);
+        void setStateRPMKd(float rpmKd);
+        float getStateRPMKd();
+
+        Q_PROPERTY(float stateKi READ getStateKi WRITE setStateKi NOTIFY stateKiChanged);
+        void setStateKi(float ki);
+        float getStateKi();
+
+        Q_PROPERTY(float stateRPMKi READ getStateRPMKi WRITE setStateRPMKi NOTIFY stateRPMKiChanged);
+        void setStateRPMKi(float rpmKi);
+        float getStateRPMKi();
 
         // Funciones invocables desde QML
         // Conexion
@@ -91,6 +131,15 @@ class GUISCPAManager : public QObject
         Q_INVOKABLE void stopSystem();
 
         Q_INVOKABLE void setSetPointOD(float value);
+
+        Q_INVOKABLE void setKp(float value);
+        Q_INVOKABLE void setKd(float value);
+        Q_INVOKABLE void setKi(float value);
+
+        // Valores de las ultimas 60 muestras
+        Q_INVOKABLE void chartUpdate(QLineSeries *lineSeriesOD, QLineSeries *lineSeriesRPM,
+                                     QLineSeries *lineSeriesRPMKp, QLineSeries *lineSeriesRPMKd,
+                                     QLineSeries *lineSeriesRPMKi);
 
     public slots:
         void getSensorValue(hmiprotocoldata::Sensor sensor, float value);
@@ -141,6 +190,14 @@ class GUISCPAManager : public QObject
         void stateSystemActiveChanged();
         void stateSetpointODChanged();
 
+        void stateErrorChanged();
+        void stateKpChanged();
+        void stateRPMKpChanged();
+        void stateKdChanged();
+        void stateRPMKdChanged();
+        void stateKiChanged();
+        void stateRPMKiChanged();
+
     private:
         // Hilo de administración de cliente
         QThread *hmiClientThread = nullptr;
@@ -164,6 +221,23 @@ class GUISCPAManager : public QObject
         bool stateSystemActive = false;
 
         float stateSetpointOD = 0;
+
+        // PID
+        float stateError = 0;
+        float stateKp = 0;
+        float stateRPMKp = 0;
+        float stateKd = 0;
+        float stateRPMKd = 0;
+        float stateKi = 0;
+        float stateRPMKi = 0;
+
+        // Ultimos valores de muestra
+        QList<float> valuesOD;
+        QList<float> valuesRPM;
+
+        QList<float> valuesRPMKp;
+        QList<float> valuesRPMKd;
+        QList<float> valuesRPMKi;
 };
 
 #endif // GUISCPAMANAGER_H
