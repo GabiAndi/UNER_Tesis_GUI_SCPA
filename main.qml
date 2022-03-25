@@ -246,7 +246,13 @@ ApplicationWindow {
             }
 
             switchStateSystem.onCheckedChanged: {
-                switchStateSystem.checked ? guiSCPAManager.initSystem() : guiSCPAManager.stopSystem();
+                if (guiSCPAManager.stateSystemActive && !switchStateSystem.checked) {
+                    guiSCPAManager.stopSystem();
+                }
+
+                if (!guiSCPAManager.stateSystemActive && switchStateSystem.checked) {
+                    guiSCPAManager.initSystem();
+                }
             }
 
             buttonControlador.onClicked: {
@@ -260,7 +266,6 @@ ApplicationWindow {
                 running: true
 
                 onTriggered: {
-                    parent.hMISCPAMotorStatusM01.motorOn = guiSCPAManager.stateSystemActive;
                     parent.hMISCPAMotorStatusM01.hMICircularProgressBarCorriente.currentValue = guiSCPAManager.sensorMotorCurrent;
                     parent.hMISCPAMotorStatusM01.hMICircularProgressBarVoltaje.currentValue = guiSCPAManager.sensorMotorVoltaje;
                     parent.hMISCPAMotorStatusM01.hMICircularProgressBarVelocidad.currentValue = guiSCPAManager.sensorMotorVelocity;
